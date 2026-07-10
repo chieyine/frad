@@ -1,3 +1,4 @@
+// FRAD Foundation offline mock datasets for headless CMS fallback
 import type { Project, Story, NewsItem, Report, Publication, Job, Partner, Location, MediaAsset } from '@/types/content';
 
 export const MOCK_PROJECTS: Project[] = [
