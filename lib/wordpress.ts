@@ -1,4 +1,15 @@
 import type { Job, Location, MediaAsset, NewsItem, Partner, Project, Publication, Report, Story } from '@/types/content';
+import {
+  MOCK_PROJECTS,
+  MOCK_STORIES,
+  MOCK_NEWS,
+  MOCK_REPORTS,
+  MOCK_PUBLICATIONS,
+  MOCK_JOBS,
+  MOCK_PARTNERS,
+  MOCK_LOCATIONS,
+  MOCK_MEDIA
+} from '@/lib/mockData';
 
 const WORDPRESS_API_URL = process.env.WORDPRESS_API_URL;
 
@@ -150,6 +161,9 @@ export async function fetchContentSlot(key: string, revalidate = 300): Promise<W
 }
 
 export async function fetchProjects(limit = 12): Promise<Project[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_PROJECTS.slice(0, limit);
+  }
   const data = await safeGraphQL<{
     fradProjects?: {
       nodes: Array<RawNode<{
@@ -200,6 +214,9 @@ export async function fetchProjects(limit = 12): Promise<Project[]> {
 }
 
 export async function fetchStories(limit = 12): Promise<Story[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_STORIES.slice(0, limit);
+  }
   const data = await safeGraphQL<{
     fradStories?: {
       nodes: Array<RawNode<{
@@ -246,6 +263,9 @@ export async function fetchStories(limit = 12): Promise<Story[]> {
 }
 
 export async function fetchNews(limit = 12): Promise<NewsItem[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_NEWS.slice(0, limit);
+  }
   const data = await safeGraphQL<{
     fradNewsItems?: {
       nodes: Array<RawNode<{
@@ -284,6 +304,9 @@ export async function fetchNews(limit = 12): Promise<NewsItem[]> {
 }
 
 export async function fetchReports(limit = 12): Promise<Report[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_REPORTS.slice(0, limit);
+  }
   const data = await safeGraphQL<{
     fradReports?: {
       nodes: Array<RawNode<{
@@ -324,6 +347,9 @@ export async function fetchReports(limit = 12): Promise<Report[]> {
 }
 
 export async function fetchPublications(limit = 12): Promise<Publication[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_PUBLICATIONS.slice(0, limit);
+  }
   const data = await safeGraphQL<{
     fradPublications?: {
       nodes: Array<RawNode<{
@@ -368,6 +394,9 @@ export async function fetchPublications(limit = 12): Promise<Publication[]> {
 }
 
 export async function fetchJobs(limit = 12): Promise<Job[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_JOBS.slice(0, limit);
+  }
   const data = await safeGraphQL<{
     fradJobs?: {
       nodes: Array<RawNode<{
@@ -400,6 +429,9 @@ export async function fetchJobs(limit = 12): Promise<Job[]> {
 }
 
 export async function fetchPartners(limit = 24): Promise<Partner[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_PARTNERS.slice(0, limit);
+  }
   const data = await safeGraphQL<{
     fradPartners?: {
       nodes: Array<RawNode<{
@@ -433,6 +465,9 @@ export async function fetchPartners(limit = 24): Promise<Partner[]> {
 }
 
 export async function fetchLocations(limit = 24): Promise<Location[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_LOCATIONS.slice(0, limit);
+  }
   const data = await safeGraphQL<{
     fradLocations?: {
       nodes: Array<RawNode<{
@@ -459,6 +494,9 @@ export async function fetchLocations(limit = 24): Promise<Location[]> {
 }
 
 export async function fetchMediaAssets(limit = 24): Promise<MediaAsset[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_MEDIA.slice(0, limit);
+  }
   const data = await safeGraphQL<{
     fradMediaAssets?: {
       nodes: Array<RawNode<{
