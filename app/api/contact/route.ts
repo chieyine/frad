@@ -1,3 +1,5 @@
+import { rateLimit, clientIp } from '@/lib/rateLimit';
+
 type ContactPayload = {
   name?: unknown;
   email?: unknown;
@@ -20,6 +22,14 @@ function isValidEmail(value: string) {
 }
 
 export async function POST(request: Request) {
+  const limit = rateLimit(`contact:${clientIp(request)}`, 5, 10 * 60 * 1000);
+  if (!limit.ok) {
+    return Response.json(
+      { message: 'Too many messages. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }
+    );
+  }
+
   let payload: ContactPayload;
 
   try {

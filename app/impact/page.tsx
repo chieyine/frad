@@ -3,18 +3,20 @@ import Hero from '@/components/sections/Hero';
 import Breadcrumbs from '@/components/layout/Breadcrumbs';
 import ImpactStatCard from '@/components/cards/ImpactStatCard';
 import CTASection from '@/components/sections/CTASection';
+import { fetchImpactStats } from '@/lib/wordpress';
 
 export const metadata: Metadata = {
-  title: 'Impact | FRAD Foundation',
-  description: 'Verified impact reporting structure for FRAD Foundation humanitarian programmes in Nigeria.',
+  title: 'Impact',
+  description: 'Results and programme reach from FRAD Foundation humanitarian and development work in Nigeria.',
 };
 
-export default function ImpactPage() {
+export default async function ImpactPage() {
+  const stats = (await fetchImpactStats()).filter((stat) => stat.approved && stat.showOnImpactPage);
   return (
     <div className="bg-paper-100">
       <Hero
-        headline="Impact reporting with source discipline."
-        subtext="Every figure FRAD publishes is tied to a period, a place, and a source document. Impact you can examine, not just admire."
+        headline="Our impact in communities across Northern Nigeria."
+        subtext="We report programme results with the period, location, and source information needed to understand what each figure represents."
         size="small"
         backgroundImage="/images/frad-field-hero.jpg"
         wordpressKey="impact.hero"
@@ -25,57 +27,48 @@ export default function ImpactPage() {
         <div className="section-container">
           <div className="mb-10 max-w-3xl">
             <p className="eyebrow">Impact data</p>
-            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Numbers matter most when people can trust them.</h2>
+            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Clear results, reported with context.</h2>
             <p className="mt-4 text-lg leading-8 text-ink-700">
-              FRAD avoids decorative counters and publishes impact figures with period, sector, location context, and
-              source documentation.
+              Our published figures include the reporting period, programme area, location, and available source information.
             </p>
           </div>
 
           <div className="grid overflow-hidden rounded-[8px] border border-ink-950/12 bg-white sm:grid-cols-2 lg:grid-cols-4">
-            <ImpactStatCard
-              number="2019"
-              label="Founded and registered in Nigeria"
-              period="CAC/IT/NO/139393"
-              source={{ index: 1, href: '/about', label: 'CAC registration, About FRAD' }}
-            />
-            <ImpactStatCard
-              number="8"
-              label="Integrated programme areas"
-              period="Nutrition to digital systems"
-              countUp
-              source={{ index: 2, href: '/what-we-do', label: 'Programme overview' }}
-            />
-            <ImpactStatCard
-              number="3"
-              label="Operating regions"
-              period="Northeast, Northwest, Abuja"
-              countUp
-              source={{ index: 3, href: '/where-we-work', label: 'Where we work' }}
-            />
-            <ImpactStatCard
-              number="100%"
-              label="Nigerian-led"
-              period="Founded and staffed locally"
-              countUp
-              source={{ index: 4, href: '/about/governance', label: 'Governance' }}
-            />
+            {stats.map((stat, index) => (
+              <ImpactStatCard
+                key={stat.id}
+                number={stat.number}
+                label={stat.label}
+                period={[stat.period, stat.location, stat.sector].filter(Boolean).join(' / ')}
+                countUp={/^\d+[+%]?$/.test(stat.number) && stat.number !== '2019'}
+                source={stat.source ? { index: index + 1, href: stat.source, label: `Source for ${stat.label}` } : undefined}
+              />
+            ))}
           </div>
 
           <div className="mt-8 evidence-card max-w-3xl p-6">
-            <h3 className="text-xl font-extrabold">How we publish numbers</h3>
+            <h3 className="text-xl font-extrabold">How we report programme results</h3>
             <p className="mt-3 text-sm leading-7 text-ink-600">
-              Every figure FRAD publishes carries its period, sector, location context, and source document, so
-              donors, partners, and communities can trace each claim back to the evidence behind it. Programme-level
-              results are released alongside the reports that substantiate them.
+              Results are reviewed by programme and monitoring teams before publication. Where supporting reports are
+              available for public release, they are linked alongside the relevant project or result.
             </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {[
+              ['Define', 'Each metric needs a written definition, unit, reporting period, geography, and inclusion or exclusion rules.'],
+              ['Verify', 'Programme and MEAL owners confirm the source record before the figure receives public approval.'],
+              ['Publish', 'Approved figures are published with enough context for readers to understand their scope and reporting period.'],
+            ].map(([title, copy], index) => (
+              <article key={title} className="card-base"><p className="index-numeral text-3xl">{String(index + 1).padStart(2, '0')}</p><h3 className="mt-4 text-2xl font-black">{title}</h3><p className="mt-3 text-sm leading-7 text-ink-600">{copy}</p></article>
+            ))}
           </div>
         </div>
       </section>
 
       <CTASection
-        title="Support work that can be reported responsibly."
-        description="FRAD's impact reporting becomes stronger as programme evidence, reports, and stories are released."
+        title="Help us extend this work to more communities."
+        description="Your support strengthens essential services, community resilience, and locally led humanitarian action."
         primaryCta={{ label: 'Donate', href: '/donate' }}
         secondaryCta={{ label: 'Reports', href: '/reports' }}
         variant="green"

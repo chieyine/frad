@@ -6,9 +6,9 @@ import Icon from '@/components/ui/Icon';
 import { IDENTITY_CARDS } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'About FRAD Foundation',
+  title: 'About Us',
   description:
-    'FRAD Foundation is a Nigerian humanitarian and development organization supporting crisis-affected communities across Northeast and Northwest Nigeria.',
+    'FRAD Foundation is a Nigerian humanitarian and development organisation supporting crisis-affected communities across Northeast and Northwest Nigeria.',
 };
 
 export default function AboutPage() {
@@ -16,7 +16,7 @@ export default function AboutPage() {
     <div className="bg-paper-100">
       <Hero
         headline="Rooted in Nigeria. Committed to principled humanitarian action."
-        subtext="Founded in Nigeria in 2019, FRAD combines local leadership and field credibility with the accountability systems serious partnerships require."
+        subtext="Since 2019, FRAD has worked with communities and partners to respond to urgent needs and strengthen local resilience."
         size="small"
         backgroundImage="/images/frad-programme-outreach.jpg"
         wordpressKey="about.hero"
@@ -27,19 +27,18 @@ export default function AboutPage() {
         <div className="section-container grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="eyebrow">Who We Are</p>
-            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">A Nigerian-led response to urgent community needs.</h2>
+            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Working with communities to build safer, healthier futures.</h2>
           </div>
           <div className="lg:col-span-7">
             <div className="space-y-5 text-lg leading-8 text-ink-700">
               <p>
                 Future Resilience and Development Foundation (FRAD Foundation) is a Nigerian-founded and youth-led nonprofit
-                organization registered with the Corporate Affairs Commission (CAC/IT/NO/139393) in 2019.
+                organisation registered with the Corporate Affairs Commission (CAC/IT/NO/139393) in 2019.
               </p>
               <p>
-                We focus on supporting vulnerable groups, particularly women, children, and persons with disabilities, across
-                Northeast and Northwest Nigeria. By working directly with crisis-affected populations, local structures, and
-                government partners, we build self-reliance through Water, Sanitation and Hygiene (WASH), nutrition, primary healthcare,
-                Gender-Based Violence (GBV) protection, emergency response, and livelihoods resilience.
+                We support people affected by conflict, displacement, poverty, and limited access to essential services, with
+                particular attention to women, children, and persons with disabilities. Our work spans Water, Sanitation and
+                Hygiene (WASH), nutrition, primary health care, protection, education, livelihoods, peacebuilding, and emergency response.
               </p>
             </div>
           </div>
@@ -67,8 +66,8 @@ export default function AboutPage() {
       </section>
 
       <CTASection
-        title="Review governance, values, and accountability."
-        description="Explore FRAD's governance, accountability commitments, and approach to principled humanitarian work."
+        title="Learn more about the principles that guide our work."
+        description="Read about FRAD's mission, governance, community-centred approach, and accountability commitments."
         primaryCta={{ label: 'Mission and Vision', href: '/about/mission-vision-values' }}
         secondaryCta={{ label: 'Accountability', href: '/about/accountability' }}
         variant="green"

@@ -27,15 +27,14 @@ export default function ProjectCard({
   const statusVariant = status === 'active' ? 'green' : status === 'completed' ? 'muted' : 'blue';
 
   return (
-    <Link
-      href={`/projects/${slug}`}
+    <div
       className="group card-base flex h-full flex-col overflow-hidden !p-0"
       data-wp-content-type="project"
       data-wp-slug={slug}
       data-wp-fields="title,location,status,sectors,donor,summary,featuredImage"
     >
       {/* Image */}
-      <div className="relative h-52 overflow-hidden bg-gradient-to-br from-frad-green-50 via-white to-frad-navy-50">
+      <Link href={`/projects/${slug}`} className="relative block h-52 overflow-hidden bg-gradient-to-br from-frad-green-50 via-white to-frad-navy-50">
         {featuredImage ? (
           <Image
             src={featuredImage}
@@ -57,7 +56,7 @@ export default function ProjectCard({
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </Badge>
         </div>
-      </div>
+      </Link>
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-6">
@@ -67,9 +66,11 @@ export default function ProjectCard({
             {location}
           </span>
         </div>
-        <h3 className="mb-3 line-clamp-2 text-xl font-extrabold leading-snug text-ink-950 transition-colors group-hover:text-frad-green-800">
-          {title}
-        </h3>
+        <Link href={`/projects/${slug}`}>
+          <h3 className="mb-3 line-clamp-2 text-xl font-extrabold leading-snug text-ink-950 transition-colors group-hover:text-frad-green-800">
+            {title}
+          </h3>
+        </Link>
         <p className="mb-5 line-clamp-3 flex-1 text-sm leading-7 text-ink-600">
           {summary}
         </p>
@@ -81,7 +82,21 @@ export default function ProjectCard({
         {donor && (
           <p className="mt-4 border-t border-ink-950/10 pt-4 text-xs font-semibold text-ink-500">Supported by {donor}</p>
         )}
+        <div className="mt-5 flex items-center justify-between border-t border-ink-950/10 pt-4 gap-2">
+          <Link
+            href={`/projects/${slug}`}
+            className="safe-focus text-xs font-extrabold text-frad-green-800 transition hover:text-frad-green-900"
+          >
+            View Details →
+          </Link>
+          <Link
+            href={`/donate?project=${slug}&sector=${sectors[0] || 'multi-sector'}`}
+            className="safe-focus rounded-[6px] border border-frad-green-800 bg-frad-green-800 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white transition hover:bg-frad-green-900"
+          >
+            Fund Intervention
+          </Link>
+        </div>
       </div>
-    </Link>
+    </div>
   );
 }

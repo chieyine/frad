@@ -64,7 +64,7 @@ export default async function OpengraphImage() {
             maxWidth: 980,
           }}
         >
-          Humanitarian work with evidence behind it.
+          Local leadership. Practical action. Stronger communities.
         </div>
 
         <div

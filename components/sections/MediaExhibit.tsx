@@ -5,14 +5,16 @@ import ContentEmptyState from '@/components/sections/ContentEmptyState';
 import Stamp from '@/components/ui/Stamp';
 
 export default function MediaExhibit({ assets }: { assets: MediaAsset[] }) {
-  const publicAssets = assets.filter((asset) => asset.publicSafe && asset.image);
+  const publicAssets = assets.filter(
+    (asset) => asset.publicSafe && asset.consentStatus === 'approved' && asset.image
+  );
 
   if (publicAssets.length === 0) {
     return (
       <ContentEmptyState
         eyebrow="Media exhibit"
-        title="Field media is handled with consent and context."
-        description="FRAD publishes photos and videos with captions, consent safeguards, and location safety in mind, so public communication protects dignity."
+        title="Photography and video from FRAD programmes."
+        description="Contact our media team to request approved images, captions, credits, and usage information."
         href="/media"
         actionLabel="Visit media library"
       />
@@ -59,7 +61,7 @@ export default function MediaExhibit({ assets }: { assets: MediaAsset[] }) {
             <div className="p-5">
               <p className="text-xs font-black uppercase tracking-[0.12em] text-frad-green-800">{asset.mediaType}</p>
               <h4 className="mt-3 text-lg font-black leading-tight">{asset.title}</h4>
-              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.1em] text-ink-500">{asset.location ?? 'Public-safe location'}</p>
+              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.1em] text-ink-500">{asset.location ?? 'Northern Nigeria'}</p>
             </div>
           </Link>
         ))}

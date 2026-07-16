@@ -10,8 +10,8 @@ export default function FeaturedProject({ project }: { project?: Project | null 
     return (
       <ContentEmptyState
         eyebrow="Featured project"
-        title="Project records are documented with evidence."
-        description="FRAD presents project work with sector focus, location context, timeframe, partner information, and result statements where public disclosure is safe."
+        title="Explore FRAD's programme portfolio."
+        description="Learn about our programme areas, locations, partners, activities, and reported results."
         href="/projects"
         actionLabel="View project portfolio"
       />
@@ -53,15 +53,15 @@ export default function FeaturedProject({ project }: { project?: Project | null 
       </Link>
 
       <EvidenceDossier
-        title="Project record"
-        summary="FRAD project records explain what happened, where, when, with whom, and what evidence supports the result."
+        title="Project overview"
+        summary="Key information about the programme focus, implementation period, partners, location, and results."
         href={href}
         actionLabel="Open project"
         rows={[
           { label: 'Sectors', value: project.sectors.length ? project.sectors.join(', ') : 'Multi-sector response' },
           { label: 'Timeframe', value: [project.startDate, project.endDate].filter(Boolean).join(' to ') || 'Operational period recorded by programme team' },
           { label: 'Donor / partner', value: project.donor || 'Implemented with institutional and community coordination' },
-          { label: 'Results', value: project.results?.[0] || 'Results documented through FRAD programme reporting' },
+          { label: 'Results', value: project.results?.[0] || 'Contact the programme team for current results' },
         ]}
       />
     </div>

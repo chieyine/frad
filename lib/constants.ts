@@ -2,7 +2,7 @@ import type { IconName } from '@/components/ui/Icon';
 
 export const SITE_NAME = 'FRAD Foundation';
 export const SITE_DESCRIPTION =
-  'FRAD Foundation is a Nigerian humanitarian and development organization supporting crisis-affected communities across Northeast and Northwest Nigeria through nutrition, health, WASH, protection, education, livelihoods, peacebuilding, and emergency response.';
+  'FRAD Foundation is a Nigerian humanitarian and development organisation supporting crisis-affected communities across Northeast and Northwest Nigeria through nutrition, health, WASH, protection, education, livelihoods, peacebuilding, and emergency response.';
 export const SITE_URL = 'https://fradfoundation.org';
 
 interface NavLink {
@@ -89,6 +89,7 @@ export const SECONDARY_NAV = [
   { label: 'Media', href: '/media' },
   { label: 'Reports', href: '/reports' },
   { label: 'Contact', href: '/contact' },
+  { label: 'Login', href: 'https://erp.fradfoundation.org' },
 ];
 
 export const SECTORS: Array<{ title: string; slug: string; description: string; icon: IconName }> = [
@@ -107,13 +108,13 @@ export const SECTORS: Array<{ title: string; slug: string; description: string; 
   {
     title: 'Protection & GBV',
     slug: 'protection-gbv',
-    description: 'GBV risk mitigation, safe referral, community awareness, dignity, and women and girls.',
+    description: 'GBV risk mitigation, safe referral, community awareness, and services that protect the rights and dignity of women and girls.',
     icon: 'shield',
   },
   {
     title: 'Education',
     slug: 'education',
-    description: 'Education in emergencies, safe learning, learning materials, and community mobilization.',
+    description: 'Education in emergencies, safe learning, teaching materials, and community mobilisation.',
     icon: 'book-open',
   },
   {
@@ -158,7 +159,7 @@ export const SECTOR_DETAILS: Record<string, { focus: string[]; note: string }> =
     note: 'Survivor-centred protection work with confidential referral pathways and community-led risk mitigation.',
   },
   education: {
-    focus: ['Education in emergencies', 'Safe learning', 'Learning materials', 'Community mobilization'],
+    focus: ['Education in emergencies', 'Safe learning', 'Learning materials', 'Community mobilisation'],
     note: 'Safe learning spaces, teaching and learning materials, and community mobilisation for children in crisis.',
   },
   'livelihoods-resilience': {
@@ -180,10 +181,10 @@ export const SECTOR_DETAILS: Record<string, { focus: string[]; note: string }> =
 };
 
 export const IDENTITY_CARDS = [
-  { title: 'Nigerian-led', description: 'Founded and led by Nigerians with deep understanding of the context.', icon: 'flag' },
-  { title: 'Community-rooted', description: 'Working through community structures and frontline teams.', icon: 'users' },
-  { title: 'Field-focused', description: 'Present where needs are most urgent, delivering practical support.', icon: 'map-pin' },
-  { title: 'Partnership-driven', description: 'Collaborating with donors, government, UN, and civil society.', icon: 'link' },
+  { title: 'Nigerian-led', description: 'Founded and led by Nigerians with experience of the communities and contexts where we work.', icon: 'flag' },
+  { title: 'Community-centred', description: 'Listening to communities and involving them in decisions throughout each programme.', icon: 'users' },
+  { title: 'Present and responsive', description: 'Working close to communities so programmes can respond to changing needs.', icon: 'map-pin' },
+  { title: 'Partnership-driven', description: 'Working with public institutions, donors, humanitarian organisations, and civil society.', icon: 'link' },
 ] as const;
 
 export const FOOTER_LINKS = {
@@ -201,6 +202,9 @@ export const FOOTER_LINKS = {
     { label: 'Emergency Response', href: '/what-we-do/emergency-response' },
   ],
   resources: [
+    { label: 'Donor Hub', href: '/donors' },
+    { label: 'Due Diligence', href: '/donors/due-diligence' },
+    { label: 'Financial Accountability', href: '/financial-accountability' },
     { label: 'Projects', href: '/projects' },
     { label: 'Publications', href: '/publications' },
     { label: 'Reports', href: '/reports' },
@@ -213,5 +217,8 @@ export const FOOTER_LINKS = {
     { label: 'Partner With Us', href: '/partners' },
     { label: 'Donate', href: '/donate' },
     { label: 'News', href: '/news' },
+    { label: 'Press Desk', href: '/press' },
+    { label: 'Safeguarding', href: '/safeguarding' },
+    { label: 'Login', href: 'https://erp.fradfoundation.org' },
   ],
 };

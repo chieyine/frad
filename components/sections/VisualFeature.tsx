@@ -49,10 +49,19 @@ export default async function VisualFeature({
   const effectiveCaption = slot?.caption ?? slot?.subtext ?? caption;
   const effectiveHref = slot?.ctaLink ?? href;
   const effectiveActionLabel = slot?.ctaText ?? actionLabel;
+  const effectiveExhibit =
+    slot?.exhibit && slot.exhibit.location && slot.exhibit.subject
+      ? {
+          location: slot.exhibit.location,
+          subject: slot.exhibit.subject,
+          handling: slot.exhibit.handling,
+          stamps: slot.exhibit.stamps,
+        }
+      : exhibit;
 
   const frame = (
     <article
-      className={`cinematic-frame group min-h-[26rem] overflow-hidden ${exhibit ? 'rounded-b-none' : ''}`}
+      className={`cinematic-frame group min-h-[26rem] overflow-hidden ${effectiveExhibit ? 'rounded-b-none' : ''}`}
       data-wp-slot={wordpressKey}
       data-wp-fields="image,alt,eyebrow,title,caption,href,videoUrl,duration"
     >
@@ -94,7 +103,7 @@ export default async function VisualFeature({
     </article>
   );
 
-  const content = exhibit ? (
+  const content = effectiveExhibit ? (
     <div>
       {frame}
       <div className="rounded-b-[8px] border border-t-0 border-ink-950/15 bg-white px-5 py-4">
@@ -102,22 +111,22 @@ export default async function VisualFeature({
           <dl className="grid flex-1 gap-x-8 gap-y-2 font-mono text-xs leading-5 sm:grid-cols-2">
             <div>
               <dt className="text-[0.62rem] uppercase tracking-[0.16em] text-ink-500">Location</dt>
-              <dd className="mt-0.5 font-bold text-ink-900">{exhibit.location}</dd>
+              <dd className="mt-0.5 font-bold text-ink-900">{effectiveExhibit.location}</dd>
             </div>
             <div>
               <dt className="text-[0.62rem] uppercase tracking-[0.16em] text-ink-500">Subject</dt>
-              <dd className="mt-0.5 font-bold text-ink-900">{exhibit.subject}</dd>
+              <dd className="mt-0.5 font-bold text-ink-900">{effectiveExhibit.subject}</dd>
             </div>
-            {exhibit.handling && (
+            {effectiveExhibit.handling && (
               <div className="sm:col-span-2">
                 <dt className="text-[0.62rem] uppercase tracking-[0.16em] text-ink-500">Handling</dt>
-                <dd className="mt-0.5 text-ink-700">{exhibit.handling}</dd>
+                <dd className="mt-0.5 text-ink-700">{effectiveExhibit.handling}</dd>
               </div>
             )}
           </dl>
-          {exhibit.stamps && exhibit.stamps.length > 0 && (
+          {effectiveExhibit.stamps && effectiveExhibit.stamps.length > 0 && (
             <div className="flex shrink-0 gap-2">
-              {exhibit.stamps.map((stamp) => (
+              {effectiveExhibit.stamps.map((stamp) => (
                 <Stamp key={stamp.label} tone={stamp.tone ?? 'green'}>
                   {stamp.label}
                 </Stamp>

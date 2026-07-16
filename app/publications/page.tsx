@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import Hero from '@/components/sections/Hero';
 import Breadcrumbs from '@/components/layout/Breadcrumbs';
 import ReportCard from '@/components/cards/ReportCard';
@@ -6,17 +7,17 @@ import ContentEmptyState from '@/components/sections/ContentEmptyState';
 import { fetchPublications } from '@/lib/wordpress';
 
 export const metadata: Metadata = {
-  title: 'Publications | FRAD Foundation',
+  title: 'Publications',
   description: 'FRAD Foundation publications, reports, assessments, and learning products library.',
 };
 
 const libraryTypes = [
-  'Annual reports',
-  'Project reports',
-  'Assessments',
-  'Research outputs',
-  'Policy briefs',
-  'Accountability documents',
+  { label: 'Annual reports', href: '/publications/annual-reports' },
+  { label: 'Project reports', href: '/publications/reports' },
+  { label: 'Assessments', href: '/publications/reports' },
+  { label: 'Research outputs', href: '/publications/research' },
+  { label: 'Policy briefs', href: '/publications/policy-briefs' },
+  { label: 'Accountability documents', href: '/reports' },
 ];
 
 export default async function PublicationsPage() {
@@ -25,8 +26,8 @@ export default async function PublicationsPage() {
   return (
     <div className="bg-paper-100">
       <Hero
-        headline="A serious knowledge library for reports, assessments, and learning."
-        subtext="A public home for reports, assessments, policy briefs, research outputs, and accountability documents."
+        headline="Reports, research, and learning from our programmes."
+        subtext="Browse FRAD reports, assessments, policy briefs, research, and institutional publications."
         size="small"
       />
       <Breadcrumbs items={[{ label: 'Publications' }]} />
@@ -35,25 +36,24 @@ export default async function PublicationsPage() {
         <div className="section-container">
           <div className="mb-10 max-w-3xl">
             <p className="eyebrow">Knowledge and accountability</p>
-            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Reports prove the work, not decorate it.</h2>
+            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Knowledge to improve programmes and accountability.</h2>
             <p className="mt-4 text-lg leading-8 text-ink-700">
-              Publications are organized so readers can evaluate context, sector, year, location, citation, and related
-              project evidence.
+              Our publications share programme experience, assessment findings, institutional reporting, and lessons that can inform future action.
             </p>
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {libraryTypes.map((type) => (
-              <div key={type} className="evidence-card p-6">
+              <Link key={type.label} href={type.href} className="evidence-card group p-6">
                 <p className="text-xs font-extrabold uppercase tracking-[0.08em] text-frad-green-700">
                   Library category
                 </p>
-                <h3 className="mt-4 text-2xl font-extrabold">{type}</h3>
+                <h3 className="mt-4 text-2xl font-extrabold">{type.label}</h3>
                 <p className="mt-4 text-sm leading-7 text-ink-600">
-                  Documents in this category are presented with summary, sector, year, location, citation, and download
-                  context when available.
+                  Browse documents by year, programme area, location, publication type, and related project.
                 </p>
-              </div>
+                <span className="mt-5 inline-flex text-xs font-black uppercase tracking-[0.1em] text-frad-green-800 transition-transform group-hover:translate-x-1">Browse category →</span>
+              </Link>
             ))}
           </div>
 
@@ -82,8 +82,8 @@ export default async function PublicationsPage() {
             ) : (
               <ContentEmptyState
                 eyebrow="Publication index"
-                title="Reports, assessments, and learning products."
-                description="FRAD shares annual reports, project reports, assessments, policy briefs, research outputs, citations, abstracts, and PDF downloads through its evidence library."
+                title="FRAD reports, assessments, and learning resources."
+                description="Contact our team if you need a publication or programme document that is not listed here."
               />
             )}
           </div>

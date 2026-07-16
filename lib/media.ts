@@ -4,32 +4,32 @@ export const FEATURED_MEDIA = [
     location: 'Northeast Nigeria',
     type: 'Photo essay',
     image: '/images/frad-field-hero.jpg',
-    alt: 'Editorial representation of Nigerian humanitarian field staff coordinating with community members',
-    caption: 'Community-facing communication, consent, and field coordination presented with dignity.',
+    alt: 'FRAD humanitarian staff working with community members in Northern Nigeria',
+    caption: 'FRAD staff meet with community representatives to discuss programme activities and local priorities.',
   },
   {
     title: 'Water access and WASH monitoring',
     location: 'Northern Nigeria',
     type: 'Field image',
     image: '/images/frad-water-access.jpg',
-    alt: 'Editorial representation of humanitarian staff and community members checking a rural water access point',
-    caption: 'WASH imagery framed around service access, infrastructure care, and community protection.',
+    alt: 'Community members and humanitarian staff at a rural water point',
+    caption: 'Community members and programme staff review access to water and the maintenance of local facilities.',
   },
   {
     title: 'Programme outreach and partner review',
     location: 'Northeast Nigeria',
     type: 'Behind the work',
     image: '/images/frad-programme-outreach.jpg',
-    alt: 'Editorial representation of Nigerian humanitarian staff and community representatives reviewing outreach materials',
-    caption: 'Programme evidence, outreach materials, and local review moments before public communication.',
+    alt: 'FRAD staff and community representatives reviewing programme information',
+    caption: 'Programme staff and community representatives review outreach information together.',
   },
 ];
 
 export const MEDIA_STANDARDS = [
   'Documented informed consent',
-  'No protection-sensitive exposure',
-  'Location safety by default',
-  'Dignified captions and context',
+  'Safeguarding review',
+  'Sensitive locations protected',
+  'Accurate captions and context',
 ];
 
 export const FEATURED_VIDEO_FRAMES = [

@@ -7,7 +7,7 @@ import ContentEmptyState from '@/components/sections/ContentEmptyState';
 import { fetchProjects } from '@/lib/wordpress';
 
 export const metadata: Metadata = {
-  title: 'Projects | FRAD Foundation',
+  title: 'Projects',
   description: 'FRAD Foundation humanitarian and development project portfolio across Northeast and Northwest Nigeria.',
 };
 
@@ -29,8 +29,8 @@ export default async function ProjectsPage() {
   return (
     <div className="bg-paper-100">
       <Hero
-        headline="Projects with evidence behind them."
-        subtext="Every FRAD project is documented with its sectors, timeframe, partners, and results, so the record can speak for the work."
+        headline="Projects responding to community priorities."
+        subtext="Explore FRAD programmes by location, sector, implementation period, partners, and reported results."
         size="small"
         backgroundImage="/images/frad-water-access.jpg"
         wordpressKey="projects.hero"
@@ -43,11 +43,11 @@ export default async function ProjectsPage() {
             <div className="lg:col-span-5">
               <p className="eyebrow">Project records</p>
               <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">
-                Project records built for clarity, safety, and evidence.
+                A clear view of our programme portfolio.
               </h2>
               <p className="mt-5 text-lg leading-8 text-ink-700">
-                Public project information is presented with the right level of detail: sector, region, status, timeframe,
-                related evidence, and protection-sensitive location handling.
+                Each project page brings together the programme focus, location, implementation period, partners, key activities,
+                and results that can be shared publicly.
               </p>
             </div>
 
@@ -65,8 +65,8 @@ export default async function ProjectsPage() {
                   Project portfolio
                 </p>
                 <p className="mt-4 text-base leading-7 text-ink-700">
-                  FRAD publishes project records when information can be shared responsibly and supported with source
-                  context. Sensitive field details are limited to protect communities and staff.
+                  Project information is reviewed before publication. Sensitive locations and personal information are withheld
+                  whenever disclosure could put community members, staff, or partners at risk.
                 </p>
               </div>
             </div>
@@ -79,15 +79,11 @@ export default async function ProjectsPage() {
           <div className="mb-10 flex flex-wrap items-end justify-between gap-5">
             <div>
               <p className="eyebrow">Portfolio</p>
-              <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Featured project dossier</h2>
+              <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Featured project</h2>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {['All', 'Active', 'Completed', 'Planned'].map((item) => (
-                <span key={item} className="rounded-[6px] border border-ink-950/10 bg-paper-50 px-3 py-2 text-xs font-black uppercase tracking-[0.08em] text-ink-700">
-                  {item}
-                </span>
-              ))}
-            </div>
+            <p className="rounded-[6px] border border-ink-950/10 bg-paper-50 px-3 py-2 text-xs font-black uppercase tracking-[0.08em] text-ink-700">
+              Showing all published projects
+            </p>
           </div>
           <FeaturedProject project={featuredProject} />
 
@@ -95,7 +91,7 @@ export default async function ProjectsPage() {
             <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
               <h2 className="text-3xl font-extrabold sm:text-4xl">Project index</h2>
               <p className="max-w-xl text-sm font-semibold leading-7 text-ink-600">
-                Project records are organized by sector, status, location, timeframe, partners, and documented results.
+                Browse FRAD projects by sector, status, location, implementation period, and partner.
               </p>
             </div>
             {projects.length > 0 ? (
@@ -117,8 +113,8 @@ export default async function ProjectsPage() {
             ) : (
               <ContentEmptyState
                 eyebrow="Project index"
-                title="FRAD project portfolio."
-                description="FRAD documents project work with images, sectors, donors, locations, timelines, summaries, and result statements where public disclosure is safe."
+                title="Explore FRAD's programme portfolio."
+                description="Contact our programme team for information about current and completed projects."
               />
             )}
           </div>

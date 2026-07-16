@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Hero from '@/components/sections/Hero';
 import Breadcrumbs from '@/components/layout/Breadcrumbs';
-import NigeriaOperationalMap from '@/components/interactive/NigeriaOperationalMap';
 import Link from 'next/link';
+import NigeriaOperationalMap from '@/components/interactive/NigeriaOperationalMap';
 
 export const metadata: Metadata = {
-  title: 'Where We Work | FRAD Foundation',
+  title: 'Where We Work',
   description:
     'FRAD Foundation public operational footprint across Northeast Nigeria, Northwest Nigeria, and Abuja coordination.',
 };
@@ -14,13 +14,13 @@ const locations = [
   {
     title: 'Northeast Nigeria',
     meta: 'Borno, Adamawa, Yobe',
-    desc: 'Multi-sector operations across crisis-affected communities, with field detail deliberately limited to protect the people we serve.',
+    desc: 'Multi-sector humanitarian and recovery programmes across Borno, Adamawa, and Yobe states.',
     href: '/where-we-work/northeast',
   },
   {
     title: 'Northwest Nigeria',
-    meta: 'Expanding response corridor',
-    desc: 'Community support and response activities where programme details can be safely communicated.',
+    meta: 'Northwest operations',
+    desc: 'Community-based nutrition, WASH, emergency response, and resilience activities across Northwest Nigeria.',
     href: '/where-we-work/northwest',
   },
   {
@@ -35,8 +35,8 @@ export default function WhereWeWorkPage() {
   return (
     <div className="bg-paper-100">
       <Hero
-        headline="Present where needs are most urgent, across Northern Nigeria."
-        subtext="FRAD communicates regional presence clearly while protecting sensitive field locations, community safety, and protection-sensitive programme details."
+        headline="Working with communities across Northern Nigeria."
+        subtext="FRAD operates across Northeast and Northwest Nigeria, supported by national coordination in Abuja."
         size="small"
         backgroundImage="/images/frad-water-access.jpg"
         wordpressKey="where_we_work.hero"
@@ -49,8 +49,8 @@ export default function WhereWeWorkPage() {
             <p className="eyebrow">Geographic footprint</p>
             <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Northeast, Northwest, and Abuja coordination.</h2>
             <p className="mt-4 text-lg leading-8 text-ink-700">
-              FRAD communicates regional presence clearly while limiting sensitive operational details that could expose
-              communities, staff, or partners.
+              Our teams work with communities, local authorities, service providers, and humanitarian partners. We publish
+              regional information while protecting locations and personal details that could place people at risk.
             </p>
           </div>
           <NigeriaOperationalMap />
@@ -63,7 +63,7 @@ export default function WhereWeWorkPage() {
                 </p>
                 <h3 className="mt-4 text-2xl font-extrabold group-hover:text-frad-green-800">{location.title}</h3>
                 <p className="mt-4 text-sm leading-7 text-ink-600">{location.desc}</p>
-                <p className="mt-7 text-sm font-extrabold text-frad-green-800">Open location</p>
+                <p className="mt-7 text-sm font-extrabold text-frad-green-800">Learn more →</p>
               </Link>
             ))}
           </div>

@@ -5,7 +5,7 @@ import Stamp from '@/components/ui/Stamp';
 import EvidenceDossier from '@/components/sections/EvidenceDossier';
 
 export const metadata: Metadata = {
-  title: 'Northwest Nigeria | Where We Work | FRAD Foundation',
+  title: 'Northwest Nigeria | Where We Work',
   description: 'FRAD Foundation response to acute humanitarian needs across Northwest Nigeria.',
 };
 
@@ -13,7 +13,7 @@ export default function NorthwestPage() {
   return (
     <>
       <Hero
-        headline="Northwest Nigeria Operations"
+        headline="Our Work in Northwest Nigeria"
         subtext="Addressing rising food insecurity, malnutrition, and displacement in Northwest Nigeria."
         size="small"
         backgroundImage="/images/frad-field-hero.jpg"
@@ -36,13 +36,13 @@ export default function NorthwestPage() {
           </div>
 
           <EvidenceDossier
-            title="Expanding response corridor"
-            summary="FRAD's Northwest response focuses on practical support for communities facing insecurity, displacement, food pressure, and service gaps."
+            title="Northwest programme overview"
+            summary="Our work supports communities facing insecurity, displacement, food insecurity, malnutrition, and pressure on essential services."
             rows={[
               { label: 'Public geography', value: 'Northwest Nigeria' },
               { label: 'Programme focus', value: 'Nutrition, WASH, emergency response, resilience' },
-              { label: 'Location handling', value: 'Public communication avoids sensitive site-level detail' },
-              { label: 'Coordination', value: 'Response information is aligned with programme and partner reporting' },
+              { label: 'Community safety', value: 'Sensitive field locations and personal details are not published' },
+              { label: 'Coordination', value: 'Activities are coordinated with communities, authorities, and humanitarian partners' },
             ]}
           />
         </div>

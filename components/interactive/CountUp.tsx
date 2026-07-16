@@ -5,21 +5,31 @@ import { useEffect, useRef, useState } from 'react';
 /**
  * Counts a numeral up once when it first scrolls into view.
  * Non-numeric affixes ("%", "+") are preserved; renders the final value
- * immediately for users who prefer reduced motion (and before hydration,
- * since the target value is the server-rendered content).
+ * immediately for users who prefer reduced motion.
  */
-export default function CountUp({ value, duration = 900 }: { value: string; duration?: number }) {
-  const match = value.match(/^([^0-9]*)([0-9][0-9,.]*)(.*)$/);
-  const prefix = match?.[1] ?? '';
-  const target = match ? parseFloat(match[2].replace(/,/g, '')) : NaN;
-  const suffix = match?.[3] ?? '';
+export interface CountUpProps {
+  value?: string;
+  target?: number;
+  prefix?: string;
+  suffix?: string;
+  duration?: number;
+}
+
+export default function CountUp({ value, target: targetProp, prefix: prefixProp = '', suffix: suffixProp = '', duration = 900 }: CountUpProps) {
+  const finalValueStr = value ?? `${prefixProp}${targetProp ? targetProp.toLocaleString('en-NG') : '0'}${suffixProp}`;
+  const match = finalValueStr.match(/^([^0-9]*)([0-9][0-9,.]*)(.*)$/);
+  const prefix = match?.[1] ?? prefixProp;
+  const target = match ? parseFloat(match[2].replace(/,/g, '')) : (targetProp ?? NaN);
+  const suffix = match?.[3] ?? suffixProp;
 
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState(value);
+  const [display, setDisplay] = useState(finalValueStr);
 
   useEffect(() => {
     if (Number.isNaN(target)) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
     const el = ref.current;
     if (!el) return;
 
@@ -49,7 +59,7 @@ export default function CountUp({ value, duration = 900 }: { value: string; dura
   }, []);
 
   return (
-    <span ref={ref} style={{ fontVariantNumeric: 'tabular-nums' }}>
+    <span ref={ref} style={{ fontVariantNumeric: 'tabular-nums' }} aria-live="polite">
       {display}
     </span>
   );

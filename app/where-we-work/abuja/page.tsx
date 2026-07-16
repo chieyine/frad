@@ -5,7 +5,7 @@ import Stamp from '@/components/ui/Stamp';
 import EvidenceDossier from '@/components/sections/EvidenceDossier';
 
 export const metadata: Metadata = {
-  title: 'Abuja Coordination | Where We Work | FRAD Foundation',
+  title: 'Abuja Coordination | Where We Work',
   description: 'FRAD Foundation national coordination, institutional partnerships, and advocacy in Abuja.',
 };
 
@@ -14,7 +14,7 @@ export default function AbujaPage() {
     <>
       <Hero
         headline="Abuja Coordination Office"
-        subtext="National coordination, institutional compliance, and donor relations in the Federal Capital Territory."
+        subtext="Supporting national coordination, partnerships, compliance, and organisational management in the Federal Capital Territory."
         size="small"
         backgroundImage="/images/frad-programme-outreach.jpg"
         wordpressKey="where_we_work.abuja.hero"
@@ -35,13 +35,13 @@ export default function AbujaPage() {
           </div>
 
           <EvidenceDossier
-            title="Coordination and representation record"
-            summary="Abuja communicates the institutional side of FRAD: partnerships, compliance, representation, and national coordination."
+            title="Abuja coordination overview"
+            summary="The Abuja office supports national engagement, donor relations, compliance, and coordination across FRAD's programmes."
             rows={[
               { label: 'Public geography', value: 'Federal Capital Territory' },
               { label: 'Function', value: 'Coordination, compliance, partnerships, representation' },
               { label: 'Institutional role', value: 'Supports donor engagement, compliance, and national coordination' },
-              { label: 'Public access', value: 'Contact routes are handled through FRAD official channels' },
+              { label: 'Contact', value: 'Partnership and institutional enquiries are handled through FRAD official channels' },
             ]}
           />
         </div>

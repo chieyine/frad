@@ -4,8 +4,8 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs';
 import CTASection from '@/components/sections/CTASection';
 
 export const metadata: Metadata = {
-  title: 'Mission, Vision & Values | About FRAD Foundation',
-  description: 'FRAD Foundation organizational mission, vision, values, and humanitarian principles.',
+  title: 'Mission, Vision & Values',
+  description: 'FRAD Foundation mission, vision, core values, and humanitarian principles.',
 };
 
 export default function MissionVisionValuesPage() {
@@ -13,7 +13,7 @@ export default function MissionVisionValuesPage() {
     <>
       <Hero
         headline="Mission, Vision & Values"
-        subtext="Guiding principles of FRAD Foundation's humanitarian and development work across Nigeria."
+        subtext="The purpose, ambition, and values that guide FRAD Foundation's work."
         size="small"
       />
       <Breadcrumbs items={[{ label: 'About', href: '/about' }, { label: 'Mission, Vision & Values' }]} />
@@ -21,10 +21,9 @@ export default function MissionVisionValuesPage() {
       <section className="section-padding">
         <div className="section-container max-w-4xl space-y-12">
           <div className="bg-frad-green-800 border-l-4 border-white p-6 rounded-r-xl text-white">
-            <h3 className="font-extrabold text-lg text-white mb-2">Institutional Integrity</h3>
+            <h3 className="font-extrabold text-lg text-white mb-2">Our commitment</h3>
             <p className="text-sm text-white/90 leading-relaxed">
-              FRAD publishes formal organizational statements with leadership clearance so public language remains accurate,
-              accountable, and consistent with institutional records.
+              Our decisions and partnerships are guided by humanitarian principles, respect for communities, and responsibility for the resources entrusted to us.
             </p>
           </div>
 
@@ -33,7 +32,7 @@ export default function MissionVisionValuesPage() {
               <span className="text-xs font-bold uppercase tracking-wider text-frad-green-600">Our Purpose</span>
               <h2 className="text-2xl font-extrabold mt-1 mb-4">Mission Statement</h2>
               <p className="text-ink-600 text-sm bg-paper-100 p-5 rounded-lg border border-ink-950/10 leading-relaxed font-bold">
-                To build the Resilience of vulnerable populations using locally available Solutions that ensure Participation and bring meaningful development. Leaving no one behind.
+                To strengthen the resilience of vulnerable populations through locally available solutions, inclusive participation, and meaningful development that leaves no one behind.
               </p>
             </div>
 
@@ -41,15 +40,15 @@ export default function MissionVisionValuesPage() {
               <span className="text-xs font-bold uppercase tracking-wider text-frad-blue-600">Our Ambition</span>
               <h2 className="text-2xl font-extrabold mt-1 mb-4">Vision Statement</h2>
               <p className="text-ink-600 text-sm bg-paper-100 p-5 rounded-lg border border-ink-950/10 leading-relaxed font-bold">
-                A Sustainable Future where everyone can access Development, A World No One Is Left Behind...
+                A sustainable future in which everyone can participate in and benefit from development, and no one is left behind.
               </p>
             </div>
           </div>
 
           <div>
-            <h2 className="text-3xl font-extrabold sm:text-4xl mb-6">Core Values & Ethical Practice</h2>
+            <h2 className="text-3xl font-extrabold sm:text-4xl mb-6">Our core values</h2>
             <p className="text-ink-600 mb-6 font-bold text-sm">
-              FRAD adheres strictly to humanitarian principles and works with partners to build resilience under these five core values:
+              These values shape how we work with communities, colleagues, and partners:
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[

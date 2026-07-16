@@ -123,6 +123,7 @@ export default function Icon({
   className?: string;
   strokeWidth?: number;
 }) {
+  const paths = ICONS[name] ?? ICONS.cpu;
   return (
     <svg
       viewBox="0 0 24 24"
@@ -134,7 +135,7 @@ export default function Icon({
       className={className}
       aria-hidden="true"
     >
-      {ICONS[name]}
+      {paths}
     </svg>
   );
 }

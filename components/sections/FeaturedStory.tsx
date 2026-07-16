@@ -10,8 +10,8 @@ export default function FeaturedStory({ story }: { story?: Story | null }) {
     return (
       <ContentEmptyState
         eyebrow="Featured story"
-        title="Stories are shared with dignity, consent, and care."
-        description="FRAD publishes community stories only when consent, protection, and safety standards are met. The story library keeps people at the centre, never as props."
+        title="Stories from the communities we work alongside."
+        description="Read experiences of change and resilience shared with informed consent and respect for safety and dignity."
         href="/stories"
         actionLabel="Visit story library"
       />

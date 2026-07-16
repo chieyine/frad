@@ -34,7 +34,12 @@ export default function ReportCard({ title, type, year, sector, summary, pdfUrl,
         <h3 className="mb-3 line-clamp-2 text-xl font-extrabold leading-snug text-ink-950">{title}</h3>
         {summary && <p className="mb-4 line-clamp-3 flex-1 text-sm leading-7 text-ink-600">{summary}</p>}
         {pdfUrl && (
-          <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="mt-auto inline-flex items-center gap-2 border-t border-ink-950/10 pt-4 text-sm font-extrabold text-frad-green-800 transition-colors hover:text-frad-navy-900">
+          <a
+            href={pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-auto inline-flex items-center gap-2 border-t border-ink-950/10 pt-4 text-sm font-extrabold text-frad-green-800 transition-colors hover:text-frad-navy-900"
+          >
             <Icon name="download" className="h-4 w-4" />
             Download PDF
           </a>

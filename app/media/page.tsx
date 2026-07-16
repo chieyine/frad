@@ -5,7 +5,7 @@ import MediaExhibit from '@/components/sections/MediaExhibit';
 import { fetchMediaAssets } from '@/lib/wordpress';
 
 export const metadata: Metadata = {
-  title: 'Media Library | FRAD Foundation',
+  title: 'Media Library',
   description:
     'FRAD Foundation photography and film from the field, published with informed consent, captions, and location safety.',
 };
@@ -16,8 +16,8 @@ export default async function MediaPage() {
   return (
     <div className="bg-paper-100">
       <Hero
-        headline="A media library built for evidence, dignity, and public trust."
-        subtext="FRAD uses photography and video spaces to communicate field presence, programme quality, and community agency while protecting consent, safety, and sensitive locations."
+        headline="Photography and video from across our work."
+        subtext="Our media library documents programme activities and community leadership while respecting consent, dignity, and safety."
         size="small"
         backgroundImage="/images/frad-programme-outreach.jpg"
       />
@@ -28,11 +28,11 @@ export default async function MediaPage() {
           <div className="mb-10 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
             <div>
               <p className="eyebrow">Media exhibit</p>
-              <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Photography and film treated like a serious humanitarian archive.</h2>
+              <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">A responsible visual record of our programmes.</h2>
             </div>
             <p className="body-lead">
-              The media library gives partners, journalists, and supporters a visual understanding of FRAD&apos;s work
-              without exposing communities to unnecessary risk.
+              These images and films help partners, journalists, and supporters understand our work while protecting
+              the privacy and safety of the people involved.
             </p>
           </div>
           <MediaExhibit assets={assets} />
@@ -61,8 +61,7 @@ export default async function MediaPage() {
               ))}
             </div>
             <p className="mt-8 text-lg leading-8 text-ink-700">
-              Journalists and partners can request field photography, press materials, and interviews through the
-              media desk. We respond quickly and share what can be published safely.
+              Journalists and partners can request approved photography, press materials, and interviews through our media desk.
             </p>
           </div>
         </div>

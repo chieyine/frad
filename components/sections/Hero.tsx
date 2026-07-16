@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
-import HeroTransition from '@/components/sections/HeroTransition';
 import { fetchContentSlot } from '@/lib/wordpress';
 import { getHeroVideoForImage } from '@/lib/heroMedia';
 
@@ -36,6 +35,8 @@ export default async function Hero({
   const effectiveBackgroundImage = slot?.image?.sourceUrl ?? backgroundImage;
   const effectiveBackgroundVideo = slot?.videoUrl ?? backgroundVideo ?? getHeroVideoForImage(effectiveBackgroundImage);
   const effectivePrimaryCta = slot?.ctaText && slot.ctaLink ? { label: slot.ctaText, href: slot.ctaLink } : primaryCta;
+  const effectiveSecondaryCta = slot?.secondaryCtaText && slot.secondaryCtaLink ? { label: slot.secondaryCtaText, href: slot.secondaryCtaLink } : secondaryCta;
+  const effectiveTertiaryLink = slot?.tertiaryLinkText && slot.tertiaryLinkUrl ? { label: slot.tertiaryLinkText, href: slot.tertiaryLinkUrl } : tertiaryLink;
   const py = {
     full: 'py-24 lg:py-36',
     medium: 'py-20 lg:py-28',
@@ -43,7 +44,7 @@ export default async function Hero({
   };
   return (
     <section
-      className={`hero-sculpt relative overflow-hidden bg-ink-950 ${py[size]}`}
+      className={`relative overflow-hidden border-b-4 border-frad-green-700 bg-ink-950 ${py[size]}`}
       data-wp-slot={wordpressKey}
       data-wp-fields="headline,subtext,primaryCta,secondaryCta,tertiaryLink,backgroundImage,backgroundVideo"
     >
@@ -51,55 +52,56 @@ export default async function Hero({
         src={effectiveBackgroundImage}
         alt=""
         fill
-        priority={size === 'full'}
+        priority
+        fetchPriority="high"
         sizes="100vw"
         className="hero-media object-cover"
         aria-hidden="true"
       />
       {effectiveBackgroundVideo && (
         <video
-          className="hero-video absolute inset-0 h-full w-full object-cover"
-          poster={effectiveBackgroundImage}
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
+          poster={effectiveBackgroundImage}
+          className="hero-video absolute inset-0 h-full w-full object-cover opacity-35"
           aria-hidden="true"
         >
-          <source src={effectiveBackgroundVideo} type="video/mp4" />
+          <source src={effectiveBackgroundVideo} type="video/mp4" media="(min-width: 768px)" />
         </video>
       )}
-      {overlay && (
-        <div className="absolute inset-0 z-[2] bg-[linear-gradient(90deg,rgba(8,17,13,0.88),rgba(8,17,13,0.64)_48%,rgba(8,17,13,0.22)),linear-gradient(180deg,rgba(8,17,13,0.12),rgba(8,17,13,0.76))]" />
-      )}
+      {overlay && <div className="absolute inset-0 z-[2] bg-ink-950/45" aria-hidden="true" />}
       <div className="section-container relative z-10">
-        <div className="motion-stagger grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
-          <div>
-            <p className="editorial-kicker text-frad-green-200">FRAD Foundation</p>
+        <div className="grid gap-12 lg:grid-cols-[13rem_1fr] lg:items-start">
+          <div className="border-l border-white/20 pl-4 font-mono text-xs uppercase tracking-[0.16em] text-frad-green-300">
+            FRAD Foundation
+            <br />
+            Northern Nigeria
           </div>
           <div>
             <h1 className={`${size === 'full' ? 'display-title max-w-5xl' : 'section-title max-w-5xl'} text-white`}>{effectiveHeadline}</h1>
             {effectiveSubtext && <p className="mt-7 max-w-3xl text-lg font-semibold leading-8 text-white/78">{effectiveSubtext}</p>}
-            {(effectivePrimaryCta || secondaryCta || tertiaryLink) && (
+            {(effectivePrimaryCta || effectiveSecondaryCta || effectiveTertiaryLink) && (
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 {effectivePrimaryCta && <Button href={effectivePrimaryCta.href} variant="primary" size="lg">{effectivePrimaryCta.label}</Button>}
-                {secondaryCta && (
+                {effectiveSecondaryCta && (
                   <Button
-                    href={secondaryCta.href}
+                    href={effectiveSecondaryCta.href}
                     variant="outline"
                     size="lg"
                     className="border-white/35 bg-white/8 text-white hover:bg-white hover:text-ink-950"
                   >
-                    {secondaryCta.label}
+                    {effectiveSecondaryCta.label}
                   </Button>
                 )}
-                {tertiaryLink && (
+                {effectiveTertiaryLink && (
                   <Link
-                    href={tertiaryLink.href}
+                    href={effectiveTertiaryLink.href}
                     className="safe-focus group inline-flex items-center gap-2 px-3 py-4 text-sm font-black uppercase tracking-[0.1em] text-white"
                   >
-                    {tertiaryLink.label}
+                    {effectiveTertiaryLink.label}
                   </Link>
                 )}
               </div>
@@ -107,7 +109,6 @@ export default async function Hero({
           </div>
         </div>
       </div>
-      <HeroTransition />
     </section>
   );
 }

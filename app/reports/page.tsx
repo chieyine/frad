@@ -5,7 +5,7 @@ import ReportShelf from '@/components/sections/ReportShelf';
 import { fetchReports } from '@/lib/wordpress';
 
 export const metadata: Metadata = {
-  title: 'Reports & Assessments | FRAD Foundation',
+  title: 'Reports & Assessments',
   description: 'Annual reports, situational assessments, and donor accountability reporting.',
 };
 
@@ -16,7 +16,7 @@ export default async function ReportsPage() {
     <>
       <Hero
         headline="Reports & Accountability Documents"
-        subtext="Official annual reports, situation assessments, and verified project reporting."
+        subtext="Annual reports, situation assessments, programme reports, audits, and learning documents from FRAD Foundation."
         size="small"
         backgroundImage="/images/frad-programme-outreach.jpg"
         wordpressKey="reports.hero"

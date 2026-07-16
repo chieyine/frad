@@ -4,11 +4,13 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs';
 import FeaturedStory from '@/components/sections/FeaturedStory';
 import StoryCard from '@/components/cards/StoryCard';
 import ContentEmptyState from '@/components/sections/ContentEmptyState';
+import ImageCarousel from '@/components/interactive/ImageCarousel';
+import NewsletterSubscribe from '@/components/interactive/NewsletterSubscribe';
 import { fetchStories } from '@/lib/wordpress';
 
 export const metadata: Metadata = {
-  title: 'Stories | FRAD Foundation',
-  description: 'Dignity-centered stories of community agency and resilience from FRAD programmes across Nigeria.',
+  title: 'Stories',
+  description: 'Dignity-centred stories of community leadership and resilience from FRAD programmes across Nigeria.',
 };
 
 const storyCommitments = [
@@ -16,7 +18,7 @@ const storyCommitments = [
   'Names are changed whenever protection requires it',
   'Survivors are never made identifiable',
   'No graphic detail used for effect',
-  'Community agency leads. People are never props',
+  'Community members are represented with dignity and context',
   'Protection review before anything is published',
 ];
 
@@ -27,8 +29,8 @@ export default async function StoriesPage() {
   return (
     <div className="bg-paper-100">
       <Hero
-        headline="Stories told with dignity, consent, and care."
-        subtext="Stories from the communities FRAD works alongside, centred on agency and resilience, never on pity."
+        headline="Stories from the communities we work alongside."
+        subtext="Community members share experiences of change, recovery, leadership, and resilience in their own words."
         size="small"
         backgroundImage="/images/frad-field-hero.jpg"
         wordpressKey="stories.hero"
@@ -39,7 +41,7 @@ export default async function StoriesPage() {
         <div className="section-container grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="eyebrow">Ethical storytelling</p>
-            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">People come before the story.</h2>
+            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Respect comes before publication.</h2>
             <p className="mt-5 text-lg leading-8 text-ink-700">
               FRAD shares stories only when dignity, informed consent, sensitivity, and community safety can be protected.
             </p>
@@ -57,7 +59,7 @@ export default async function StoriesPage() {
                 Story library
               </p>
               <p className="mt-4 text-base leading-7 text-ink-700">
-                Public stories are shared here when they meet FRAD&apos;s consent, protection, and dignity standards.
+                Every published story is reviewed for informed consent, safeguarding, accuracy, and respectful representation.
               </p>
             </div>
           </div>
@@ -97,6 +99,21 @@ export default async function StoriesPage() {
                 description="FRAD's storytelling approach protects consent, identity, safety, and community agency before anything is shared publicly."
               />
             )}
+          </div>
+
+          <div className="mt-16 pt-10 border-t border-ink-950/10">
+            <ImageCarousel
+              eyebrow="Community stories"
+              title="People, progress, and resilience across Northern Nigeria"
+              wordpressKey="stories.carousel"
+            />
+          </div>
+
+          <div className="mt-16 max-w-3xl mx-auto">
+            <NewsletterSubscribe
+              wordpressKey="stories.newsletter"
+              defaultInterest="general_dispatch"
+            />
           </div>
         </div>
       </section>

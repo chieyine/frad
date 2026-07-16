@@ -5,7 +5,7 @@ import Stamp from '@/components/ui/Stamp';
 import EvidenceDossier from '@/components/sections/EvidenceDossier';
 
 export const metadata: Metadata = {
-  title: 'Northeast Nigeria | Where We Work | FRAD Foundation',
+  title: 'Northeast Nigeria | Where We Work',
   description: 'FRAD Foundation humanitarian response across Borno, Adamawa, and Yobe (BAY states).',
 };
 
@@ -13,7 +13,7 @@ export default function NortheastPage() {
   return (
     <>
       <Hero
-        headline="Northeast Nigeria Operations"
+        headline="Our Work in Northeast Nigeria"
         subtext="Lifesaving nutrition, WASH, protection, and emergency assistance across Borno, Adamawa, and Yobe states."
         size="small"
         backgroundImage="/images/frad-water-access.jpg"
@@ -25,7 +25,7 @@ export default function NortheastPage() {
         <div className="section-container max-w-4xl space-y-8">
           <div>
             <div className="mb-4 flex flex-wrap items-center gap-4">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Operational Context: BAY States</h2>
+            <h2 className="text-3xl font-extrabold sm:text-4xl">Borno, Adamawa, and Yobe states</h2>
               <Stamp>Active</Stamp>
             </div>
             <p className="text-ink-600 leading-relaxed">
@@ -49,13 +49,13 @@ export default function NortheastPage() {
           </div>
 
           <EvidenceDossier
-            title="Public-safe regional record"
-            summary="FRAD shares regional operational context while withholding sensitive site-level detail where community or staff safety requires it."
+            title="Regional programme overview"
+            summary="Our Northeast programmes respond to urgent needs while supporting recovery and strengthening local services."
             rows={[
               { label: 'Public geography', value: 'Borno, Adamawa, Yobe' },
               { label: 'Programme focus', value: 'Nutrition, WASH, protection, emergency response' },
-              { label: 'Location handling', value: 'Regional by design; exact field sites withheld where sensitive' },
-              { label: 'Public note', value: 'Regional information is shared without exposing sensitive field sites' },
+              { label: 'Community safety', value: 'Sensitive field locations and personal details are not published' },
+              { label: 'Coordination', value: 'Activities are coordinated with communities, authorities, and humanitarian partners' },
             ]}
           />
         </div>

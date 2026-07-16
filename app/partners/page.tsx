@@ -6,7 +6,7 @@ import PartnerProofStrip from '@/components/sections/PartnerProofStrip';
 import { fetchPartners } from '@/lib/wordpress';
 
 export const metadata: Metadata = {
-  title: 'Partner With Us | FRAD Foundation',
+  title: 'Partner With Us',
   description: 'Collaborate with FRAD Foundation on humanitarian relief, development programming, and community resilience in Nigeria.',
 };
 
@@ -23,8 +23,8 @@ export default async function PartnersPage() {
   return (
     <div className="bg-paper-100">
       <Hero
-        headline="Partner with a Nigerian-led humanitarian organization."
-        subtext="FRAD works with donors, government actors, INGOs, researchers, and technical partners through accountable, evidence-led collaboration."
+        headline="Partner with a Nigerian-led humanitarian organisation."
+        subtext="FRAD works with donors, government institutions, humanitarian organisations, researchers, and technical partners to improve outcomes for communities."
         size="small"
         backgroundImage="/images/frad-programme-outreach.jpg"
         wordpressKey="partners.hero"
@@ -34,10 +34,10 @@ export default async function PartnersPage() {
       <section className="section-padding">
         <div className="section-container grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <p className="eyebrow">Partnership readiness</p>
-            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Partnership built on clarity and accountable delivery.</h2>
+            <p className="eyebrow">Work with us</p>
+            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Partnership grounded in shared priorities.</h2>
             <p className="mt-5 text-lg leading-8 text-ink-700">
-              FRAD keeps public partnership information specific, current, and tied to verifiable collaboration.
+              We build partnerships around community needs, complementary expertise, clear responsibilities, and mutual accountability.
             </p>
           </div>
           <div className="lg:col-span-7">
@@ -46,8 +46,7 @@ export default async function PartnersPage() {
                 <div key={path} className="evidence-card p-6">
                   <h3 className="text-xl font-extrabold">{path}</h3>
                   <p className="mt-3 text-sm leading-7 text-ink-600">
-                    Each pathway is designed around shared evidence, clear contact routes, and responsible public
-                    communication.
+                    We agree objectives, roles, safeguarding expectations, reporting requirements, and communication arrangements at the start of each partnership.
                   </p>
                 </div>
               ))}

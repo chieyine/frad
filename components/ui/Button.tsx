@@ -35,9 +35,12 @@ export default function Button({
   type = 'button',
   disabled = false,
 }: ButtonProps) {
-  const baseClasses = `safe-focus cta-button micro-bounce shimmer-surface whitespace-nowrap active:scale-[0.98] ${variants[variant]} ${sizes[size]} ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`;
+  const baseClasses = `safe-focus cta-button micro-bounce shimmer-surface text-center whitespace-normal sm:whitespace-nowrap active:scale-[0.98] ${variants[variant]} ${sizes[size]} ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`;
 
   if (href) {
+    if (disabled) {
+      return <span className={baseClasses} aria-disabled="true">{children}</span>;
+    }
     return (
       <Link href={href} className={baseClasses}>
         {children}

@@ -1,4 +1,4 @@
-import type { Job, Location, MediaAsset, NewsItem, Partner, Project, Publication, Report, Story } from '@/types/content';
+import type { Job, Location, MediaAsset, NewsItem, Partner, Project, Publication, Report, Story, EmergencyAlert, ImpactStat, Sector } from '@/types/content';
 import {
   MOCK_PROJECTS,
   MOCK_STORIES,
@@ -8,8 +8,11 @@ import {
   MOCK_JOBS,
   MOCK_PARTNERS,
   MOCK_LOCATIONS,
-  MOCK_MEDIA
+  MOCK_MEDIA,
+  MOCK_ALERTS,
+  MOCK_IMPACT_STATS,
 } from '@/lib/mockData';
+import { SECTORS } from '@/lib/constants';
 
 const WORDPRESS_API_URL = process.env.WORDPRESS_API_URL;
 
@@ -27,13 +30,29 @@ export async function fetchGraphQL<T>(
     throw new Error('WORDPRESS_API_URL is missing.');
   }
 
+  let isDraft = false;
+  if (typeof window === 'undefined') {
+    try {
+      const { draftMode } = await import('next/headers');
+      const draft = await draftMode();
+      isDraft = draft.isEnabled;
+    } catch {
+      isDraft = false;
+    }
+  }
+
+  const effectiveRevalidate = isDraft ? 0 : revalidate;
+
   const res = await fetch(WORDPRESS_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ query, variables }),
-    next: { revalidate },
+    next: {
+      revalidate: effectiveRevalidate,
+      tags: ['wordpress'],
+    },
   });
 
   if (!res.ok) {
@@ -67,6 +86,22 @@ export interface WordPressContentSlot {
   videoUrl?: string;
   ctaText?: string;
   ctaLink?: string;
+  secondaryCtaText?: string;
+  secondaryCtaLink?: string;
+  tertiaryLinkText?: string;
+  tertiaryLinkUrl?: string;
+  exhibit?: {
+    location?: string;
+    subject?: string;
+    handling?: string;
+    stamps?: Array<{ label: string; tone?: 'green' | 'red' }>;
+  };
+  slotItems?: Array<{
+    title?: string;
+    description?: string;
+    label?: string;
+    value?: string;
+  }>;
 }
 
 interface RawWordPressContentSlot extends Omit<WordPressContentSlot, 'image'> {
@@ -91,10 +126,22 @@ type RawNode<T> = {
   title?: string;
 } & T;
 
+function safePublicUrl(value?: string): string | undefined {
+  if (!value) return undefined;
+  const trimmed = value.trim();
+  if (trimmed.startsWith('/') && !trimmed.startsWith('//')) return trimmed;
+  try {
+    const url = new URL(trimmed);
+    return url.protocol === 'https:' ? url.toString() : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 function imageUrl(image?: RawImage | string): string | undefined {
   if (!image) return undefined;
-  if (typeof image === 'string') return image;
-  return image.node?.sourceUrl;
+  if (typeof image === 'string') return safePublicUrl(image);
+  return safePublicUrl(image.node?.sourceUrl);
 }
 
 function imageAlt(image?: RawImage): string | undefined {
@@ -107,6 +154,18 @@ function list<T>(value: unknown): T[] {
 
 function nodes<T>(value?: T[]): T[] {
   return value ?? [];
+}
+
+function currentAlerts(alerts: EmergencyAlert[]): EmergencyAlert[] {
+  const now = Date.now();
+  return alerts.filter((alert) => {
+    if (!alert.active) return false;
+    const startsAt = alert.startDate ? Date.parse(alert.startDate) : Number.NEGATIVE_INFINITY;
+    const endsAt = alert.endDate ? Date.parse(alert.endDate) : Number.POSITIVE_INFINITY;
+    const validStart = !alert.startDate || !Number.isNaN(startsAt);
+    const validEnd = !alert.endDate || !Number.isNaN(endsAt);
+    return validStart && validEnd && startsAt <= now && endsAt >= now;
+  });
 }
 
 async function safeGraphQL<T>(
@@ -149,12 +208,18 @@ export async function fetchContentSlot(key: string, revalidate = 300): Promise<W
     return null;
   }
 
+  const slotImageUrl = imageUrl(slot.image);
+
   return {
     ...slot,
-    image: slot.image?.node
+    videoUrl: safePublicUrl(slot.videoUrl),
+    ctaLink: safePublicUrl(slot.ctaLink),
+    secondaryCtaLink: safePublicUrl(slot.secondaryCtaLink),
+    tertiaryLinkUrl: safePublicUrl(slot.tertiaryLinkUrl),
+    image: slotImageUrl
       ? {
-          sourceUrl: slot.image.node.sourceUrl,
-          altText: slot.image.node.altText,
+          sourceUrl: slotImageUrl,
+          altText: slot.image?.node?.altText,
         }
       : undefined,
   };
@@ -188,6 +253,8 @@ export async function fetchProjects(limit = 12): Promise<Project[]> {
     };
   }>(QUERIES.projects, { first: limit }, 180);
 
+  if (!data) return MOCK_PROJECTS.slice(0, limit);
+
   return nodes(data?.fradProjects?.nodes).map((node) => {
     const fields = node.projectFields ?? {};
     return {
@@ -196,7 +263,7 @@ export async function fetchProjects(limit = 12): Promise<Project[]> {
       title: node.title ?? 'FRAD project record',
       status: fields.status ?? 'planned',
       donor: fields.donor,
-      location: fields.location ?? 'Public-safe location',
+      location: fields.location ?? 'Northern Nigeria',
       sectors: list<string>(fields.sectors),
       startDate: fields.startDate ?? '',
       endDate: fields.endDate,
@@ -215,7 +282,7 @@ export async function fetchProjects(limit = 12): Promise<Project[]> {
 
 export async function fetchStories(limit = 12): Promise<Story[]> {
   if (!isWordPressConfigured()) {
-    return MOCK_STORIES.slice(0, limit);
+    return MOCK_STORIES.filter((story) => story.consentStatus === 'consented').slice(0, limit);
   }
   const data = await safeGraphQL<{
     fradStories?: {
@@ -239,6 +306,8 @@ export async function fetchStories(limit = 12): Promise<Story[]> {
     };
   }>(QUERIES.stories, { first: limit }, 180);
 
+  if (!data) return MOCK_STORIES.filter((story) => story.consentStatus === 'consented').slice(0, limit);
+
   return nodes(data?.fradStories?.nodes).map((node) => {
     const fields = node.storyFields ?? {};
     return {
@@ -259,7 +328,7 @@ export async function fetchStories(limit = 12): Promise<Story[]> {
       featuredOnHomepage: Boolean(fields.featuredOnHomepage),
       protectionSensitive: Boolean(fields.protectionSensitive),
     };
-  });
+  }).filter((story) => story.consentStatus === 'consented');
 }
 
 export async function fetchNews(limit = 12): Promise<NewsItem[]> {
@@ -283,6 +352,8 @@ export async function fetchNews(limit = 12): Promise<NewsItem[]> {
       }>>;
     };
   }>(QUERIES.news, { first: limit }, 180);
+
+  if (!data) return MOCK_NEWS.slice(0, limit);
 
   return nodes(data?.fradNewsItems?.nodes).map((node) => {
     const fields = node.newsFields ?? {};
@@ -326,6 +397,8 @@ export async function fetchReports(limit = 12): Promise<Report[]> {
     };
   }>(QUERIES.reports, { first: limit }, 180);
 
+  if (!data) return MOCK_REPORTS.slice(0, limit);
+
   return nodes(data?.fradReports?.nodes).map((node) => {
     const fields = node.reportFields ?? {};
     return {
@@ -338,7 +411,7 @@ export async function fetchReports(limit = 12): Promise<Report[]> {
       sector: fields.sector,
       location: fields.location,
       summary: fields.summary,
-      pdfUrl: fields.pdfUrl,
+      pdfUrl: safePublicUrl(fields.pdfUrl),
       coverImage: imageUrl(fields.coverImage),
       relatedProject: fields.relatedProject,
       datePublished: fields.datePublished ?? '',
@@ -371,6 +444,8 @@ export async function fetchPublications(limit = 12): Promise<Publication[]> {
     };
   }>(QUERIES.publications, { first: limit }, 180);
 
+  if (!data) return MOCK_PUBLICATIONS.slice(0, limit);
+
   return nodes(data?.fradPublications?.nodes).map((node) => {
     const fields = node.publicationFields ?? {};
     return {
@@ -384,7 +459,7 @@ export async function fetchPublications(limit = 12): Promise<Publication[]> {
       sector: fields.sector,
       location: fields.location,
       keywords: list<string>(fields.keywords),
-      pdfUrl: fields.pdfUrl,
+      pdfUrl: safePublicUrl(fields.pdfUrl),
       coverImage: imageUrl(fields.coverImage),
       citation: fields.citation,
       relatedProject: fields.relatedProject,
@@ -405,6 +480,8 @@ export async function fetchJobs(limit = 12): Promise<Job[]> {
     };
   }>(QUERIES.jobs, { first: limit }, 120);
 
+  if (!data) return MOCK_JOBS.slice(0, limit);
+
   return nodes(data?.fradJobs?.nodes).map((node) => {
     const fields: Partial<Omit<Job, 'id' | 'slug' | 'title'>> = node.jobFields ?? {};
     return {
@@ -420,9 +497,9 @@ export async function fetchJobs(limit = 12): Promise<Job[]> {
       responsibilities: list<string>(fields.responsibilities),
       requirements: list<string>(fields.requirements),
       howToApply: fields.howToApply ?? '',
-      applicationLink: fields.applicationLink,
+      applicationLink: safePublicUrl(fields.applicationLink),
       status: fields.status ?? 'closed',
-      pdfAttachment: fields.pdfAttachment,
+      pdfAttachment: safePublicUrl(fields.pdfAttachment),
       datePosted: fields.datePosted ?? '',
     };
   });
@@ -448,6 +525,8 @@ export async function fetchPartners(limit = 24): Promise<Partner[]> {
     };
   }>(QUERIES.partners, { first: limit }, 300);
 
+  if (!data) return MOCK_PARTNERS.slice(0, limit);
+
   return nodes(data?.fradPartners?.nodes).map((node) => {
     const fields = node.partnerFields ?? {};
     return {
@@ -455,7 +534,7 @@ export async function fetchPartners(limit = 24): Promise<Partner[]> {
       name: node.title ?? 'FRAD partner',
       partnerType: fields.partnerType ?? 'network',
       logo: imageUrl(fields.logo),
-      website: fields.website,
+      website: safePublicUrl(fields.website),
       activePast: fields.activePast ?? 'active',
       approvedToDisplay: Boolean(fields.approvedToDisplay),
       relatedProjects: list<string>(fields.relatedProjects),
@@ -476,6 +555,8 @@ export async function fetchLocations(limit = 24): Promise<Location[]> {
     };
   }>(QUERIES.locations, { first: limit }, 300);
 
+  if (!data) return MOCK_LOCATIONS.slice(0, limit);
+
   return nodes(data?.fradLocations?.nodes).map((node) => {
     const fields: Partial<Omit<Location, 'id'>> = node.locationFields ?? {};
     return {
@@ -486,16 +567,16 @@ export async function fetchLocations(limit = 24): Promise<Location[]> {
       officeType: fields.officeType,
       sectorsActive: list<string>(fields.sectorsActive),
       description: fields.description,
-      coordinates: fields.coordinates,
+      coordinates: fields.securitySensitive ? undefined : fields.coordinates,
       securitySensitive: Boolean(fields.securitySensitive),
       displayPublicly: fields.displayPublicly ?? true,
     };
-  });
+  }).filter((location) => location.displayPublicly);
 }
 
 export async function fetchMediaAssets(limit = 24): Promise<MediaAsset[]> {
   if (!isWordPressConfigured()) {
-    return MOCK_MEDIA.slice(0, limit);
+    return MOCK_MEDIA.filter((asset) => asset.publicSafe && asset.consentStatus === 'approved').slice(0, limit);
   }
   const data = await safeGraphQL<{
     fradMediaAssets?: {
@@ -517,6 +598,8 @@ export async function fetchMediaAssets(limit = 24): Promise<MediaAsset[]> {
     };
   }>(QUERIES.mediaAssets, { first: limit }, 300);
 
+  if (!data) return MOCK_MEDIA.filter((asset) => asset.publicSafe && asset.consentStatus === 'approved').slice(0, limit);
+
   return nodes(data?.fradMediaAssets?.nodes).map((node) => {
     const fields = node.mediaAssetFields ?? {};
     return {
@@ -524,7 +607,7 @@ export async function fetchMediaAssets(limit = 24): Promise<MediaAsset[]> {
       title: node.title ?? 'FRAD field media',
       mediaType: fields.mediaType ?? 'image',
       image: imageUrl(fields.image),
-      videoUrl: fields.videoUrl,
+      videoUrl: safePublicUrl(fields.videoUrl),
       alt: imageAlt(fields.image),
       caption: fields.caption,
       location: fields.location,
@@ -535,7 +618,150 @@ export async function fetchMediaAssets(limit = 24): Promise<MediaAsset[]> {
       dateCaptured: fields.dateCaptured,
       featuredOnHomepage: Boolean(fields.featuredOnHomepage),
     };
+  }).filter((asset) => asset.publicSafe && asset.consentStatus === 'approved');
+}
+
+export async function fetchEmergencyAlerts(): Promise<EmergencyAlert[]> {
+  if (!isWordPressConfigured()) {
+    return currentAlerts(MOCK_ALERTS);
+  }
+  const data = await safeGraphQL<{
+    fradAlerts?: {
+      nodes: Array<RawNode<{
+        alertFields?: Omit<EmergencyAlert, 'id'>;
+      }>>;
+    };
+  }>(QUERIES.emergencyAlerts, {}, 60);
+
+  if (!data) return currentAlerts(MOCK_ALERTS);
+
+  return currentAlerts(nodes(data?.fradAlerts?.nodes).map((node) => {
+    const fields: Partial<EmergencyAlert> = node.alertFields ?? {};
+    return {
+      id: node.id ?? 'alert',
+      title: node.title ?? fields.title ?? 'Emergency Alert',
+      message: fields.message ?? '',
+      ctaText: fields.ctaText,
+      ctaLink: safePublicUrl(fields.ctaLink),
+      startDate: fields.startDate ?? '',
+      endDate: fields.endDate ?? '',
+      active: fields.active ?? true,
+      priority: fields.priority ?? 'medium',
+    };
+  }));
+}
+
+export async function fetchImpactStats(): Promise<ImpactStat[]> {
+  if (!isWordPressConfigured()) {
+    return MOCK_IMPACT_STATS;
+  }
+  const data = await safeGraphQL<{
+    fradImpactStats?: {
+      nodes: Array<RawNode<{
+        impactFields?: Omit<ImpactStat, 'id'>;
+      }>>;
+    };
+  }>(QUERIES.impactStats, {}, 180);
+
+  const stats = nodes(data?.fradImpactStats?.nodes).map((node) => {
+    const fields: Partial<ImpactStat> = node.impactFields ?? {};
+    return {
+      id: node.id ?? 'stat',
+      number: fields.number ?? '',
+      label: fields.label ?? node.title ?? '',
+      period: fields.period,
+      sector: fields.sector,
+      location: fields.location,
+      source: safePublicUrl(fields.source),
+      showOnHomepage: Boolean(fields.showOnHomepage),
+      showOnImpactPage: Boolean(fields.showOnImpactPage),
+      approved: Boolean(fields.approved),
+    };
   });
+
+  return stats.length > 0 ? stats : MOCK_IMPACT_STATS;
+}
+
+export async function fetchSectors(): Promise<Sector[]> {
+  if (!isWordPressConfigured()) {
+    return SECTORS.map((s) => ({
+      id: s.slug,
+      slug: s.slug,
+      name: s.title,
+      shortDescription: s.description,
+      fullDescription: s.description,
+      icon: s.icon,
+      keyActivities: [],
+    }));
+  }
+  const data = await safeGraphQL<{
+    fradSectors?: {
+      nodes: Array<RawNode<{
+        sectorFields?: {
+          slug?: string;
+          name?: string;
+          shortDescription?: string;
+          fullDescription?: string;
+          icon?: string;
+          keyActivities?: string[];
+        };
+      }>>;
+    };
+  }>(QUERIES.sectors, {}, 300);
+
+  const sectors = nodes(data?.fradSectors?.nodes).map((node) => {
+    const fields = (node.sectorFields ?? {}) as {
+      slug?: string;
+      name?: string;
+      shortDescription?: string;
+      fullDescription?: string;
+      icon?: string;
+      keyActivities?: string[];
+    };
+    return {
+      id: node.id ?? node.slug ?? 'sector',
+      slug: fields.slug ?? node.slug ?? '',
+      name: fields.name ?? node.title ?? '',
+      shortDescription: fields.shortDescription ?? '',
+      fullDescription: fields.fullDescription ?? fields.shortDescription ?? '',
+      icon: fields.icon,
+      keyActivities: list<string>(fields.keyActivities),
+    };
+  });
+
+  return sectors.length > 0
+    ? sectors
+    : SECTORS.map((s) => ({
+        id: s.slug,
+        slug: s.slug,
+        name: s.title,
+        shortDescription: s.description,
+        fullDescription: s.description,
+        icon: s.icon,
+        keyActivities: [],
+      }));
+}
+
+export interface WordPressSiteSettings {
+  officeAddresses?: Array<{
+    locationName: string;
+    addressLines: string;
+  }>;
+  contactEmail?: string;
+  phoneNumbers?: string[];
+  cacRegistrationNumber?: string;
+  donationInstructions?: string;
+}
+
+export async function fetchSiteSettings(): Promise<WordPressSiteSettings | null> {
+  if (!isWordPressConfigured()) {
+    return null;
+  }
+  const data = await safeGraphQL<{
+    fradSiteSettings?: WordPressSiteSettings;
+  }>(QUERIES.siteSettings, {}, 300);
+
+  return data?.fradSiteSettings ?? null;
 }
 
 export const QUERIES = {
@@ -552,6 +778,25 @@ export const QUERIES = {
             videoUrl
             ctaText
             ctaLink
+            secondaryCtaText
+            secondaryCtaLink
+            tertiaryLinkText
+            tertiaryLinkUrl
+            exhibit {
+              location
+              subject
+              handling
+              stamps {
+                label
+                tone
+              }
+            }
+            slotItems {
+              title
+              description
+              label
+              value
+            }
             image {
               node {
                 sourceUrl
@@ -867,6 +1112,39 @@ export const QUERIES = {
             }
           }
         }
+      }
+    }
+  `,
+  sectors: `
+    query GetSectors {
+      fradSectors(first: 24, where: { status: PUBLISH }) {
+        nodes {
+          id
+          slug
+          title
+          sectorFields {
+            slug
+            name
+            shortDescription
+            fullDescription
+            icon
+            keyActivities
+          }
+        }
+      }
+    }
+  `,
+  siteSettings: `
+    query GetSiteSettings {
+      fradSiteSettings {
+        officeAddresses {
+          locationName
+          addressLines
+        }
+        contactEmail
+        phoneNumbers
+        cacRegistrationNumber
+        donationInstructions
       }
     }
   `,

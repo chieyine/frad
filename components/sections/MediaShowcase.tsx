@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Stamp from '@/components/ui/Stamp';
 import { FEATURED_MEDIA, FEATURED_VIDEO_FRAMES, MEDIA_STANDARDS } from '@/lib/media';
+import { fetchContentSlot, fetchMediaAssets } from '@/lib/wordpress';
+import type { MediaAsset } from '@/types/content';
 
 interface MediaShowcaseProps {
   eyebrow?: string;
@@ -10,29 +12,64 @@ interface MediaShowcaseProps {
   ctaHref?: string;
   ctaLabel?: string;
   compact?: boolean;
+  wordpressKey?: string;
+  assets?: MediaAsset[];
 }
 
-export default function MediaShowcase({
+export default async function MediaShowcase({
   eyebrow = 'Media Library',
-  title = 'Field media that carries proof without compromising dignity.',
-  description = 'Photography, video, and field documentation should help partners understand the work while protecting communities, staff, and sensitive locations.',
+  title = 'Photography and video from our programmes.',
+  description = 'Our visual documentation helps people understand FRAD programmes while protecting consent, privacy, and sensitive locations.',
   ctaHref = '/media',
   ctaLabel = 'Open media library',
   compact = false,
+  wordpressKey,
+  assets,
 }: MediaShowcaseProps) {
-  const lead = FEATURED_MEDIA[0];
-  const supporting = FEATURED_MEDIA.slice(1);
+  const slot = wordpressKey ? await fetchContentSlot(wordpressKey).catch(() => null) : null;
+  const fetchedAssets = !assets && wordpressKey ? await fetchMediaAssets(4).catch(() => null) : null;
+
+  const displayEyebrow = slot?.eyebrow ?? eyebrow;
+  const displayTitle = slot?.headline ?? title;
+  const displayDescription = slot?.subtext ?? description;
+  const displayCtaHref = slot?.ctaLink ?? ctaHref;
+  const displayCtaLabel = slot?.ctaText ?? ctaLabel;
+
+  const normalizeMedia = (list: MediaAsset[]) =>
+    list.map((a) => ({
+      title: a.title,
+      image: a.image ?? '/images/frad-field-hero.jpg',
+      category: a.sector ?? 'Field Photo',
+      location: a.location ?? 'Nigeria',
+      caption: a.caption ?? a.title,
+      alt: a.alt ?? a.title,
+      type: a.mediaType === 'video' ? 'Video' : 'Photo',
+    }));
+
+  const activeMedia =
+    assets && assets.length >= 4
+      ? normalizeMedia(assets)
+      : fetchedAssets && fetchedAssets.length >= 4
+      ? normalizeMedia(fetchedAssets)
+      : FEATURED_MEDIA;
+
+  const lead = activeMedia[0];
+  const supporting = activeMedia.slice(1);
 
   return (
-    <section className={`section-shell ${compact ? 'py-12' : 'section-padding'}`}>
+    <section
+      className={`section-shell ${compact ? 'py-12' : 'section-padding'}`}
+      data-wp-slot={wordpressKey}
+      data-wp-fields="eyebrow,headline,subtext,ctaLink,ctaText"
+    >
       <div className="section-container">
         <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
           <div>
-            <p className="editorial-kicker">{eyebrow}</p>
-            <h2 className="section-title mt-6 max-w-4xl">{title}</h2>
+            <p className="editorial-kicker">{displayEyebrow}</p>
+            <h2 className="section-title mt-6 max-w-4xl">{displayTitle}</h2>
           </div>
           <div>
-            <p className="body-lead">{description}</p>
+            <p className="body-lead">{displayDescription}</p>
             <div className="mt-7 flex flex-wrap gap-2">
               {MEDIA_STANDARDS.map((standard) => (
                 <span
@@ -111,7 +148,7 @@ export default function MediaShowcase({
           {FEATURED_VIDEO_FRAMES.map((video) => (
             <Link
               key={video.title}
-              href={ctaHref}
+              href={displayCtaHref}
               className="cinematic-frame group block min-h-80 overflow-hidden"
             >
               <Image
@@ -151,8 +188,8 @@ export default function MediaShowcase({
             Every image and clip in this library is published with informed consent, captions, and location safety in
             mind, so partners and press can use it with confidence.
           </p>
-          <Link href={ctaHref} className="safe-focus cta-button cta-primary">
-            {ctaLabel}
+          <Link href={displayCtaHref} className="safe-focus cta-button cta-primary">
+            {displayCtaLabel}
           </Link>
         </div>
       </div>

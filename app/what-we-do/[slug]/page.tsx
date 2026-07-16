@@ -5,7 +5,10 @@ import Hero from '@/components/sections/Hero';
 import Breadcrumbs from '@/components/layout/Breadcrumbs';
 import CTASection from '@/components/sections/CTASection';
 import Icon from '@/components/ui/Icon';
+import ImageCarousel from '@/components/interactive/ImageCarousel';
 import { SECTORS, SECTOR_DETAILS } from '@/lib/constants';
+import { fetchMediaAssets } from '@/lib/wordpress';
+import { FEATURED_MEDIA } from '@/lib/media';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -20,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const sector = SECTORS.find((s) => s.slug === slug);
   if (!sector) return { title: 'Programme Not Found' };
   return {
-    title: `${sector.title} | FRAD Foundation`,
+    title: sector.title,
     description: sector.description,
   };
 }
@@ -34,6 +37,31 @@ export default async function SectorDetailPage({ params }: PageProps) {
   }
 
   const details = SECTOR_DETAILS[sector.slug] ?? { focus: [], note: '' };
+
+  // Fetch or filter media specific to this sector or general field documentation
+  const fetchedMedia = await fetchMediaAssets(6).catch(() => null);
+  const rawMedia = fetchedMedia && fetchedMedia.length > 0 ? fetchedMedia : FEATURED_MEDIA;
+
+  // Filter by sector keyword match or show all
+  const sectorMedia = rawMedia.filter((m) => {
+    const raw = m as Record<string, unknown>;
+    const sName = ((raw.sector as string) || (raw.category as string) || (raw.type as string) || '').toLowerCase();
+    const target = sector.title.toLowerCase();
+    return sName.includes(target.split(' ')[0]) || target.includes(sName.split(' ')[0]);
+  });
+
+  const displayMedia = (sectorMedia.length > 0 ? sectorMedia : rawMedia).map((m, idx) => {
+    const raw = m as Record<string, unknown>;
+    return {
+      id: `sector-slide-${idx}`,
+      title: m.title,
+      image: m.image || '/images/frad-field-hero.jpg',
+      caption: m.caption || m.title,
+      category: (raw.sector as string) || (raw.category as string) || (raw.type as string) || sector.title,
+      location: m.location || 'Borno / Yobe State',
+      alt: m.alt || m.title,
+    };
+  });
 
   return (
     <>
@@ -58,9 +86,8 @@ export default async function SectorDetailPage({ params }: PageProps) {
             <p className="eyebrow">Programme overview</p>
             <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">{sector.title}</h2>
             <p className="mt-5 text-lg leading-8 text-ink-700">
-              FRAD implements dignity-centered, practical interventions under this sector, working directly with
-              community structures, health committees, and local partners so assistance reaches the most vulnerable
-              households.
+              FRAD works with community groups, public institutions, and local partners to deliver practical support
+              under this programme area, with particular attention to people facing the greatest barriers to essential services.
             </p>
           </div>
 
@@ -87,9 +114,21 @@ export default async function SectorDetailPage({ params }: PageProps) {
         </div>
       </section>
 
+      {/* Visual Evidence Carousel */}
+      <section className="section-padding bg-paper-100 border-y border-ink-950/10">
+        <div className="section-container">
+          <ImageCarousel
+            slides={displayMedia}
+            eyebrow={`${sector.title} in action`}
+            title="Programme activities with communities"
+            wordpressKey={`sector-carousel-${sector.slug}`}
+          />
+        </div>
+      </section>
+
       <CTASection
-        title={`Support Our ${sector.title} Interventions`}
-        description="Join FRAD in strengthening community-level service delivery."
+        title={`Support FRAD's ${sector.title} work`}
+        description="Partner with us to strengthen services and expand support for crisis-affected communities."
         primaryCta={{ label: 'Partner With Us', href: '/partners' }}
         variant="neutral"
       />

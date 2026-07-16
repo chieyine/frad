@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Icon from '@/components/ui/Icon';
 import { SITE_URL } from '@/lib/constants';
+import { serializeJsonLd } from '@/components/seo/JsonLd';
 
 interface BreadcrumbItem {
   label: string;
@@ -35,7 +36,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <nav aria-label="Breadcrumb" className="section-container py-4">
         <ol className="flex items-center gap-1.5 text-sm font-bold text-ink-600 flex-wrap">

@@ -3,16 +3,16 @@ import Hero from '@/components/sections/Hero';
 import Breadcrumbs from '@/components/layout/Breadcrumbs';
 
 export const metadata: Metadata = {
-  title: 'Governance & Leadership | About FRAD Foundation',
-  description: 'FRAD Foundation organizational governance, leadership structure, and institutional compliance.',
+  title: 'Governance & Leadership',
+  description: 'FRAD Foundation governance, leadership structure, oversight, and organisational compliance.',
 };
 
 export default function GovernancePage() {
   return (
     <>
       <Hero
-        headline="Governance & Leadership Structure"
-        subtext="Institutional transparency, compliance, and oversight guiding FRAD Foundation."
+        headline="Governance & Leadership"
+        subtext="The oversight and management structures that guide FRAD Foundation."
         size="small"
       />
       <Breadcrumbs items={[{ label: 'About', href: '/about' }, { label: 'Governance' }]} />
@@ -23,8 +23,8 @@ export default function GovernancePage() {
             <h2 className="text-3xl font-extrabold sm:text-4xl mb-4">Institutional Governance</h2>
             <p className="text-ink-600 leading-relaxed">
               FRAD Foundation is duly registered under the laws of the Federal Republic of Nigeria. Our governance
-              framework ensures rigorous financial stewardship, legal compliance, risk management, and oversight across
-              all our humanitarian and development interventions.
+              framework supports responsible financial management, legal compliance, risk management, and oversight across
+              our humanitarian and development programmes.
             </p>
           </div>
 
@@ -42,9 +42,9 @@ export default function GovernancePage() {
           </div>
 
           <div className="bg-paper-100 p-6 rounded-xl border border-ink-950/10">
-            <h3 className="font-extrabold text-base text-ink-950 mb-2">Leadership Profiles</h3>
+            <h3 className="font-extrabold text-base text-ink-950 mb-2">Leadership information</h3>
             <p className="text-sm text-ink-600">
-              Executive leadership and trustee information is shared through verified institutional channels.
+              Information about FRAD&apos;s trustees and executive leadership is available to donors and partners through our institutional contact channels.
             </p>
           </div>
         </div>
