@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
-import Stamp from '@/components/ui/Stamp';
 import { trackCarouselSlide } from '@/lib/analytics';
 import { FEATURED_MEDIA } from '@/lib/media';
 
@@ -39,7 +38,7 @@ export default function ImageCarousel({
       title: m.title,
       image: m.image,
       caption: m.caption,
-      category: (raw.category as string) || (raw.type as string) || 'Field Intervention',
+      category: (raw.category as string) || (raw.type as string) || 'Programme activity',
       location: m.location,
       alt: (raw.alt as string) || m.title,
     };
@@ -140,7 +139,7 @@ export default function ImageCarousel({
         {activeSlides.map((slide, idx) => (
           <div
             key={slide.id || idx}
-            className="w-full flex-shrink-0 snap-center relative min-h-[25rem] sm:min-h-[36rem] overflow-hidden group"
+            className="group relative min-h-[28rem] w-full flex-shrink-0 snap-center overflow-hidden sm:min-h-[36rem]"
             role="group"
             aria-roledescription="slide"
             aria-label={`${idx + 1} of ${activeSlides.length}: ${slide.title}`}
@@ -166,7 +165,6 @@ export default function ImageCarousel({
                     {slide.location}
                   </span>
                 )}
-                <Stamp tone="white">Consent Filed</Stamp>
               </div>
 
               <h4 className="text-2xl sm:text-4xl font-extrabold leading-tight text-white max-w-3xl">

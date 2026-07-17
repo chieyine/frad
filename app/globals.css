@@ -571,9 +571,6 @@ a.card-base,
 
 .safe-focus:focus-visible {
   outline-color: var(--color-frad-green-700);
-}
-
-.safe-focus:focus-visible {
   animation: focus-pulse 520ms ease both;
 }
 
@@ -808,6 +805,10 @@ a.source-mark:hover {
 }
 
 @media (max-width: 767px) {
+  .section-padding {
+    padding-block: 3.5rem;
+  }
+
   .hero-video {
     display: none;
   }
@@ -820,6 +821,12 @@ a.source-mark:hover {
 
   .display-title {
     font-size: clamp(2.75rem, 13vw, 4.2rem);
+  }
+}
+
+@media (hover: none) {
+  .shimmer-surface::after {
+    display: none;
   }
 }
 

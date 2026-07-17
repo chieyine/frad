@@ -4,7 +4,7 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy & Data Ethics',
-  description: 'FRAD Foundation policies on data protection, ethical photography, and beneficiary consent.',
+  description: 'FRAD Foundation policies on data protection, ethical photography, and informed consent.',
 };
 
 export default function PrivacyPage() {
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="card-base"><h3 className="text-xl font-black">Forms and inquiries</h3><p className="mt-3 text-sm leading-7 text-ink-600">Contact and newsletter details are used to respond to the request or provide the communication selected. Safeguarding submissions require more restrictive access and handling.</p></div>
             <div className="card-base"><h3 className="text-xl font-black">Donations</h3><p className="mt-3 text-sm leading-7 text-ink-600">Payment details are handled by the selected payment provider. FRAD receives transaction references, status, amount, currency, donor contact details supplied to the provider, and programme designation needed for receipts and reconciliation.</p></div>
-            <div className="card-base"><h3 className="text-xl font-black">Measurement</h3><p className="mt-3 text-sm leading-7 text-ink-600">The site measures page journeys, form outcomes, checkout stages, errors, and performance. Analytics must not include contact messages, safeguarding details, full email addresses, payment credentials, or beneficiary personal data.</p></div>
+            <div className="card-base"><h3 className="text-xl font-black">Measurement</h3><p className="mt-3 text-sm leading-7 text-ink-600">The site measures page journeys, form outcomes, checkout stages, errors, and performance. Analytics must not include contact messages, safeguarding details, full email addresses, payment credentials, or programme participant data.</p></div>
             <div className="card-base"><h3 className="text-xl font-black">Your choices</h3><p className="mt-3 text-sm leading-7 text-ink-600">Use the official contact route to ask about access, correction, deletion, objection, consent withdrawal, or how information connected to a website interaction is handled.</p></div>
           </div>
 

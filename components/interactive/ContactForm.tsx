@@ -5,6 +5,7 @@ import Button from '@/components/ui/Button';
 import { trackEvent } from '@/lib/analytics';
 
 export default function ContactForm({ defaultReason = 'general' }: { defaultReason?: 'general' | 'partnership' | 'media' | 'complaint' }) {
+  const fieldClassName = 'safe-focus min-h-12 w-full rounded-lg border border-ink-950/15 bg-white px-4 py-3 text-sm text-ink-950 shadow-[0_10px_24px_-22px_rgba(8,17,13,0.45)] transition-colors hover:border-ink-950/25 focus:border-frad-green-700 focus:outline-none';
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -88,7 +89,7 @@ export default function ContactForm({ defaultReason = 'general' }: { defaultReas
         />
       </div>
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-ink-800 mb-1">Full Name *</label>
+        <label htmlFor="name" className="mb-1.5 block text-sm font-bold text-ink-800">Full name *</label>
         <input
           id="name"
           type="text"
@@ -97,12 +98,12 @@ export default function ContactForm({ defaultReason = 'general' }: { defaultReas
           maxLength={120}
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="w-full px-4 py-2.5 rounded-lg border border-ink-950/15 focus:outline-none focus:ring-2 focus:ring-frad-green-500 text-sm"
+          className={fieldClassName}
         />
       </div>
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-ink-800 mb-1">Email Address *</label>
+          <label htmlFor="email" className="mb-1.5 block text-sm font-bold text-ink-800">Email address *</label>
           <input
             id="email"
             type="email"
@@ -111,11 +112,11 @@ export default function ContactForm({ defaultReason = 'general' }: { defaultReas
             maxLength={180}
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-lg border border-ink-950/15 focus:outline-none focus:ring-2 focus:ring-frad-green-500 text-sm"
+            className={fieldClassName}
           />
         </div>
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-ink-800 mb-1">Phone Number</label>
+          <label htmlFor="phone" className="mb-1.5 block text-sm font-bold text-ink-800">Phone number</label>
           <input
             id="phone"
             type="tel"
@@ -123,26 +124,26 @@ export default function ContactForm({ defaultReason = 'general' }: { defaultReas
             maxLength={80}
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-lg border border-ink-950/15 focus:outline-none focus:ring-2 focus:ring-frad-green-500 text-sm"
+            className={fieldClassName}
           />
         </div>
       </div>
       <div>
-        <label htmlFor="reason" className="block text-sm font-medium text-ink-800 mb-1">Inquiry Type</label>
+        <label htmlFor="reason" className="mb-1.5 block text-sm font-bold text-ink-800">Reason for contacting us</label>
         <select
           id="reason"
           value={formData.reason}
           onChange={(e) => setFormData({ ...formData, reason: e.target.value as typeof formData.reason })}
-          className="w-full px-4 py-2.5 rounded-lg border border-ink-950/15 focus:outline-none focus:ring-2 focus:ring-frad-green-500 text-sm bg-white"
+          className={fieldClassName}
         >
           <option value="general">General enquiry</option>
           <option value="partnership">Partnership enquiry</option>
           <option value="media">Media and press</option>
-          <option value="complaint">Confidential Complaint / Safeguarding</option>
+          <option value="complaint">Confidential complaint or safeguarding concern</option>
         </select>
       </div>
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-ink-800 mb-1">Message *</label>
+        <label htmlFor="message" className="mb-1.5 block text-sm font-bold text-ink-800">Message *</label>
         <textarea
           id="message"
           rows={4}
@@ -150,7 +151,7 @@ export default function ContactForm({ defaultReason = 'general' }: { defaultReas
           maxLength={3000}
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          className="w-full px-4 py-2.5 rounded-lg border border-ink-950/15 focus:outline-none focus:ring-2 focus:ring-frad-green-500 text-sm"
+          className={`${fieldClassName} min-h-36 resize-y`}
         />
       </div>
       <div className="flex items-start gap-2">
@@ -167,7 +168,7 @@ export default function ContactForm({ defaultReason = 'general' }: { defaultReas
         </label>
       </div>
       <Button type="submit" variant="primary" disabled={status === 'submitting'} className="w-full">
-        {status === 'submitting' ? 'Sending Message...' : 'Submit Message'}
+        {status === 'submitting' ? 'Sending message…' : 'Send message'}
       </Button>
     </form>
   );

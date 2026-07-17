@@ -218,9 +218,12 @@ export default function NigeriaOperationalMap() {
     setHoveredStateName(stateName);
     if (mapContainerRef.current) {
       const rect = mapContainerRef.current.getBoundingClientRect();
+      const tooltipHalfWidth = Math.min(152, Math.max(96, (rect.width - 24) / 2));
+      const pointerX = e.clientX - rect.left;
+      const pointerY = e.clientY - rect.top;
       setTooltipPos({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: Math.min(Math.max(pointerX, tooltipHalfWidth + 12), rect.width - tooltipHalfWidth - 12),
+        y: Math.max(pointerY, 142),
       });
     }
   };
@@ -239,10 +242,10 @@ export default function NigeriaOperationalMap() {
         </div>
         <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap">
           {[
-            { id: 'northeast', label: 'Northeast (BAY States)', count: '3 States' },
-            { id: 'northwest', label: 'Northwest Corridor', count: '7 States' },
+            { id: 'northeast', label: 'Northeast (BAY States)', count: '3 states' },
+            { id: 'northwest', label: 'Northwest Corridor', count: '7 states' },
             { id: 'abuja', label: 'Abuja Hub', count: 'HQ' },
-            { id: 'all', label: 'All Nigeria', count: '37 States/FCT' },
+            { id: 'all', label: 'All Nigeria', count: '36 states + FCT' },
           ].map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -269,13 +272,13 @@ export default function NigeriaOperationalMap() {
 
       <div className="grid lg:grid-cols-[1.2fr_0.8fr]">
         {/* Interactive Map Area */}
-        <div ref={mapContainerRef} className="map-grid relative p-4 sm:p-6 lg:p-8 flex flex-col justify-between bg-gradient-to-b from-paper-100/40 to-paper-200/50">
-          <div className="relative mx-auto w-full max-w-[44rem] my-auto">
+        <div className="map-grid relative flex flex-col justify-between bg-gradient-to-b from-paper-100/40 to-paper-200/50 p-4 sm:p-6 lg:p-8">
+          <div ref={mapContainerRef} className="relative mx-auto my-auto w-full max-w-[44rem]">
             {/* Real SVG Map of Nigeria */}
             <svg
               viewBox="0 0 800 650"
               className="w-full h-auto max-h-[520px] drop-shadow-xl select-none"
-              role="img"
+              role="group"
               aria-label="Interactive map of Nigeria showing all states and active FRAD operational presence"
             >
               <defs>
@@ -361,7 +364,10 @@ export default function NigeriaOperationalMap() {
                         }
                       }}
                       onMouseMove={(e) => handleMouseMove(e, state.name)}
-                      onMouseLeave={() => setHoveredStateName(null)}
+                      onMouseLeave={() => {
+                        setHoveredStateName(null);
+                        setTooltipPos(null);
+                      }}
                       className="transition-all duration-200 hover:opacity-100 focus:outline-none focus:stroke-frad-red-600"
                     />
                   </g>
@@ -425,12 +431,12 @@ export default function NigeriaOperationalMap() {
             {/* Floating Tooltip when hovering over a state */}
             {hoveredState && tooltipPos && (
               <div
-                className="pointer-events-none absolute z-30 min-w-[14rem] -translate-x-1/2 -translate-y-[calc(100%+12px)] rounded-xl border border-ink-950/15 bg-ink-950/95 px-4 py-3 text-white shadow-2xl backdrop-blur-md transition-all duration-150 animate-in fade-in zoom-in-95"
+                className="pointer-events-none absolute z-30 hidden w-72 max-w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-[calc(100%+12px)] rounded-xl border border-white/15 bg-ink-950/95 px-4 py-3.5 text-white shadow-2xl backdrop-blur-md sm:block"
                 style={{ left: tooltipPos.x, top: tooltipPos.y }}
               >
-                <div className="flex items-center justify-between gap-2 border-b border-white/15 pb-1.5 mb-1.5">
-                  <span className="font-black text-sm text-white">{hoveredState.name}</span>
-                  <span className="rounded bg-frad-green-800 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-frad-green-100">
+                <div className="mb-2 flex items-start justify-between gap-3 border-b border-white/15 pb-2">
+                  <span className="text-sm font-black leading-5 text-white">{hoveredState.name}</span>
+                  <span className="shrink-0 rounded bg-frad-green-800 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-frad-green-100">
                     {hoveredState.regionId === 'northeast'
                       ? 'Northeast'
                       : hoveredState.regionId === 'northwest'
@@ -440,10 +446,10 @@ export default function NigeriaOperationalMap() {
                           : 'Partner network'}
                   </span>
                 </div>
-                <p className="text-[11px] font-bold text-frad-green-200">{hoveredState.statusLabel}</p>
-                <p className="mt-1 text-[11px] leading-4 text-white/80 line-clamp-2">{hoveredState.focus}</p>
-                <p className="mt-2 text-[9px] font-black uppercase tracking-[0.1em] text-amber-300">
-                  Select to view programme information →
+                <p className="text-xs font-bold leading-5 text-frad-green-200">{hoveredState.statusLabel}</p>
+                <p className="mt-1 text-xs leading-5 text-white/80">{hoveredState.summary}</p>
+                <p className="mt-2.5 text-[10px] font-black uppercase tracking-[0.1em] text-amber-300">
+                  Select for programme details →
                 </p>
               </div>
             )}
@@ -476,7 +482,7 @@ export default function NigeriaOperationalMap() {
         </div>
 
         {/* Right Operations Side Panel */}
-        <aside className="bg-frad-green-950 p-6 sm:p-8 text-white flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-ink-950/20">
+        <aside aria-live="polite" className="flex flex-col justify-between border-t border-ink-950/20 bg-frad-green-950 p-6 text-white sm:p-8 lg:border-l lg:border-t-0">
           <div>
             <div className="flex items-center justify-between gap-3">
               <div>
@@ -488,7 +494,7 @@ export default function NigeriaOperationalMap() {
                 </span>
               </div>
               <div className="flex flex-col items-end gap-1">
-                <Stamp tone="white">Active</Stamp>
+                <Stamp tone="white">{selectedState.regionId === 'monitoring' ? 'Partner network' : 'Active'}</Stamp>
                 {selectedState.securitySensitive && (
                   <span className="rounded-full bg-red-600/30 border border-red-400/80 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-red-200">
                     Location protected

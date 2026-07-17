@@ -37,7 +37,7 @@ export async function GET(
     const targetReport = reports.find((r) => r.slug === id || r.id === id);
 
     if (!targetReport || !targetReport.pdfUrl) {
-      return NextResponse.json({ message: 'Requested report dossier not found or unavailable.' }, { status: 404 });
+      return NextResponse.json({ message: 'The requested report could not be found or is unavailable.' }, { status: 404 });
     }
 
     const targetUrl = new URL(targetReport.pdfUrl, request.url);
@@ -46,7 +46,7 @@ export async function GET(
     }
 
     // Log download event for audit trail
-    console.log(`[AUDIT LOG] Authorized dossier download initiated for report ID/slug: "${id}" at ${new Date().toISOString()}`);
+    console.log(`[AUDIT LOG] Report download initiated for ID/slug: "${id}" at ${new Date().toISOString()}`);
 
     return NextResponse.redirect(targetUrl);
   } catch (error) {

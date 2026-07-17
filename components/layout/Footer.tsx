@@ -63,6 +63,14 @@ export default async function Footer() {
             <Link href="/contact" className="safe-focus mt-3 flex text-sm font-extrabold text-frad-green-300 transition-colors hover:text-white">
               Contact FRAD
             </Link>
+            <a
+              href="https://erp.fradfoundation.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="safe-focus mt-3 flex items-center gap-1.5 text-sm font-extrabold text-frad-green-300 transition-colors hover:text-white"
+            >
+              Login <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
       </div>
@@ -77,6 +85,7 @@ export default async function Footer() {
           <Link href="/privacy" className="safe-focus transition-colors hover:text-white">Privacy</Link>
           <Link href="/about/accountability" className="safe-focus transition-colors hover:text-white">Safeguarding</Link>
           <Link href="/contact" className="safe-focus transition-colors hover:text-white">Contact</Link>
+          <a href="https://erp.fradfoundation.org" target="_blank" rel="noopener noreferrer" className="safe-focus transition-colors hover:text-white">Login ↗</a>
         </div>
       </div>
     </footer>

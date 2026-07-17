@@ -20,18 +20,18 @@ export default function LocationCard({ title, description, href, accent = 'green
       <div>
         <div className="flex flex-wrap items-center gap-2">
           <span className={`inline-flex rounded-[6px] border px-3 py-1 text-xs font-extrabold uppercase tracking-[0.08em] ${accentClasses[accent]}`}>
-            {securitySensitive ? 'Restricted zone' : 'Public location'}
+            {securitySensitive ? 'Regional overview' : 'Programme location'}
           </span>
           {securitySensitive && (
             <span className="inline-flex rounded-[6px] border border-red-700/30 bg-red-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-800">
-              Safehouse Obfuscated
+              Sensitive details protected
             </span>
           )}
         </div>
         <h3 className="mt-6 text-2xl font-extrabold group-hover:text-frad-green-800">{title}</h3>
         <p className="mt-4 text-sm leading-7 text-ink-600">
           {securitySensitive
-            ? `${description} (Exact field coordinates obfuscated to regional centroid under safeguarding protocol).`
+            ? `${description} Exact programme sites are withheld where disclosure could create risk.`
             : description}
         </p>
       </div>

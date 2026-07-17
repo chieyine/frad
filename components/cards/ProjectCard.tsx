@@ -87,13 +87,13 @@ export default function ProjectCard({
             href={`/projects/${slug}`}
             className="safe-focus text-xs font-extrabold text-frad-green-800 transition hover:text-frad-green-900"
           >
-            View Details →
+            View project →
           </Link>
           <Link
             href={`/donate?project=${slug}&sector=${sectors[0] || 'multi-sector'}`}
             className="safe-focus rounded-[6px] border border-frad-green-800 bg-frad-green-800 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white transition hover:bg-frad-green-900"
           >
-            Fund Intervention
+            Support this work
           </Link>
         </div>
       </div>

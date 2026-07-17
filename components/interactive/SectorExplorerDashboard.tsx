@@ -64,7 +64,7 @@ export default function SectorExplorerDashboard({
         <div id="selected-sector-panel" className="bg-white p-6 sm:p-8 lg:p-10" aria-live="polite">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.12em] text-frad-green-800">Selected sector</p>
+              <p className="text-xs font-black uppercase tracking-[0.12em] text-frad-green-800">Programme overview</p>
               <h3 className="mt-5 text-4xl font-black leading-none sm:text-5xl">{activeItem.title}</h3>
             </div>
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[8px] border border-frad-green-800/20 bg-frad-green-50 text-frad-green-900">
@@ -91,13 +91,13 @@ export default function SectorExplorerDashboard({
                 href={`/what-we-do/${activeItem.slug}`}
                 className="safe-focus cta-button cta-primary"
               >
-                Open sector
+                Explore programme
               </Link>
               <Link
                 href={`/donate?sector=${activeItem.slug}`}
                 className="safe-focus cta-button border border-frad-green-800 bg-white text-frad-green-800 hover:bg-frad-green-50"
               >
-                Fund Intervention
+                Support this work
               </Link>
             </div>
           </div>

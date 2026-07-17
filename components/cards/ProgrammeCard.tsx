@@ -29,7 +29,7 @@ export default function ProgrammeCard({ title, description, slug, icon }: Progra
         <p className="mt-4 text-sm leading-7 text-ink-600">{description}</p>
       </div>
       <span className="mt-8 inline-flex items-center gap-2 border-t border-ink-950/10 pt-4 text-sm font-extrabold text-frad-green-800 transition-all group-hover:gap-3">
-        Explore sector
+        Learn about this programme
       </span>
     </Link>
   );

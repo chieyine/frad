@@ -38,7 +38,7 @@ export default function JobCard({ title, slug, department, location, employmentT
       </div>
       <div className="shrink-0">
         <span className="flex items-center gap-1 text-sm font-extrabold text-frad-green-800 transition-all group-hover:gap-2">
-          View Details <Icon name="chevron-right" className="h-4 w-4" />
+          View role <Icon name="chevron-right" className="h-4 w-4" />
         </span>
       </div>
     </Link>
